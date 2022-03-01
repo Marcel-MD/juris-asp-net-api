@@ -1,6 +1,6 @@
 ﻿namespace Juris.Models.Enums;
 
-public enum Category
+public enum ProfileType
 {
     Lawyer,
     Notary

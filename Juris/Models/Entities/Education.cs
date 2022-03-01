@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Juris.Models.Entities;
+﻿namespace Juris.Models.Entities;
 
 public class Education : BaseEntity
 {

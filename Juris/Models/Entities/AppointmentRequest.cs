@@ -1,12 +1,13 @@
 ﻿using Juris.Models.Enums;
+using Juris.Models.Identity;
 
 namespace Juris.Models.Entities;
 
 public class AppointmentRequest : BaseEntity
 {
-    public long UserDashboardId { get; set; }
+    public long UserId { get; set; }
 
-    public UserDashboard UserDashboard { get; set; }
+    public User User { get; set; }
 
     public string FirstName { get; set; }
 

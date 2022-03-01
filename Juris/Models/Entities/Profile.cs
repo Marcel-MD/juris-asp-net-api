@@ -19,15 +19,15 @@ public class Profile : BaseEntity
 
     public string Description { get; set; }
 
-    public Category Category { get; set; }
+    public ProfileType ProfileType { get; set; }
 
     public ProfileStatus Status { get; set; }
 
-    public long AddressId { get; set; }
+    public int Price { get; set; }
+
+    public float Rating { get; set; }
 
     public Address Address { get; set; }
-
-    public int Price { get; set; }
 
     public ICollection<Education> Educations { get; set; }
 

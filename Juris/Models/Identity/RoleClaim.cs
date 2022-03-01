@@ -2,7 +2,6 @@
 
 namespace Juris.Models.Identity;
 
-public class RoleClaim : IdentityRoleClaim<long> 
+public class RoleClaim : IdentityRoleClaim<long>
 {
-
 }

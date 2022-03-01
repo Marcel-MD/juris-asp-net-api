@@ -21,5 +21,6 @@ public class DatabaseContext : IdentityDbContext<User, Role, long, UserClaim, Us
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
     }
 }
