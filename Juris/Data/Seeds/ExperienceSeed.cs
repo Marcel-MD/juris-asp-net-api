@@ -8,36 +8,36 @@ public static class ExperienceSeed
     public static async Task Seed(DatabaseContext dbContext)
     {
         if (dbContext.Experiences.Any()) return;
-        
-        Log.Information("Seeding experiences data ...");
+
+        Log.Warning("Seeding experiences data ...");
 
         dbContext.Experiences.AddRange
         (
-            new Experience()
+            new Experience
             {
-                ProfileId = 2,
+                ProfileId = 1,
                 Company = "Amdaris",
                 Position = "Junior Developer",
                 StartDate = new DateTime(2021, 9, 1)
             },
-            new Experience()
+            new Experience
             {
-                ProfileId = 3,
+                ProfileId = 2,
                 Company = "OrheiLand",
                 Position = "Drummer",
                 StartDate = new DateTime(2020, 9, 12)
             },
-            new Experience()
+            new Experience
             {
-                ProfileId = 2,
+                ProfileId = 1,
                 Company = "Sigmoid",
                 Position = "ML Engineer",
                 StartDate = new DateTime(2020, 5, 22),
                 EndDate = new DateTime(2021, 10, 7)
             },
-            new Experience()
+            new Experience
             {
-                ProfileId = 4,
+                ProfileId = 3,
                 Company = "MCDonald",
                 Position = "Food Judge",
                 StartDate = new DateTime(2019, 7, 13)

@@ -8,25 +8,22 @@ public static class RoleSeed
 {
     public static async Task Seed(RoleManager<Role> roleManager)
     {
-        if(roleManager.Roles.Any()) return;
-        
-        Log.Information("Seeding roles data ...");
-        
-        List<Role> roles = new List<Role>
+        if (roleManager.Roles.Any()) return;
+
+        Log.Warning("Seeding roles data ...");
+
+        var roles = new List<Role>
         {
-            new Role
+            new()
             {
                 Name = "Admin"
             },
-            new Role
+            new()
             {
                 Name = "User"
             }
         };
 
-        for (int i = 0; i < roles.Count; i++)
-        {
-            await roleManager.CreateAsync(roles[i]);
-        }
+        for (var i = 0; i < roles.Count; i++) await roleManager.CreateAsync(roles[i]);
     }
 }

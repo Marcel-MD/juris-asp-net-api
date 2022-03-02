@@ -1,5 +1,5 @@
-﻿using Juris.Models.Entities;
-using Juris.Models.Enums;
+﻿using Juris.Models.Constants;
+using Juris.Models.Entities;
 using Serilog;
 
 namespace Juris.Data.Seeds;
@@ -9,14 +9,13 @@ public static class ProfileSeed
     public static async Task Seed(DatabaseContext dbContext)
     {
         if (dbContext.Profiles.Any()) return;
-        
-        Log.Information("Seeding profiles data ...");
-        
+
+        Log.Warning("Seeding profiles data ...");
+
         dbContext.Profiles.AddRange
         (
-            new Profile()
+            new Profile
             {
-                Id = 2,
                 UserId = 2,
                 FirstName = "Viorel",
                 LastName = "Noroc",
@@ -27,9 +26,8 @@ public static class ProfileSeed
                 Price = 800,
                 Rating = 9
             },
-            new Profile()
+            new Profile
             {
-                Id = 3,
                 UserId = 3,
                 FirstName = "Nicu",
                 LastName = "Savva",
@@ -39,9 +37,8 @@ public static class ProfileSeed
                 Price = 500,
                 Rating = 7
             },
-            new Profile()
+            new Profile
             {
-                Id = 4,
                 UserId = 4,
                 FirstName = "Irina",
                 LastName = "Tiora",
@@ -50,11 +47,10 @@ public static class ProfileSeed
                 ProfileType = ProfileType.Judge,
                 Status = ProfileStatus.Approved,
                 Price = 780,
-                Rating = 8.5,
+                Rating = 8.5
             },
-            new Profile()
+            new Profile
             {
-                Id = 5,
                 UserId = 5,
                 FirstName = "Stephania",
                 LastName = "Matvei",

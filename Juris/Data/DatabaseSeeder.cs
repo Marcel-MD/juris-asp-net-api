@@ -9,21 +9,11 @@ public static class DatabaseSeeder
     public static async Task Seed(IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
-        
+
         var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<Role>>();
         var userManger = serviceScope.ServiceProvider.GetService<UserManager<User>>();
         var dbContext = serviceScope.ServiceProvider.GetService<DatabaseContext>();
 
-        if (roleManager == null)
-        {
-            Console.WriteLine("Role manger is null");
-        }
-
-        if (userManger == null)
-        {
-            Console.WriteLine("User manger is null");
-        }
-        
         await RoleSeed.Seed(roleManager);
         await UserSeed.Seed(userManger);
 

@@ -1,5 +1,5 @@
-﻿using Juris.Models.Entities;
-using Juris.Models.Enums;
+﻿using Juris.Models.Constants;
+using Juris.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

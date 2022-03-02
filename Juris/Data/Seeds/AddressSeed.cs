@@ -1,5 +1,5 @@
-﻿using Juris.Models.Entities;
-using Juris.Models.Enums;
+﻿using Juris.Models.Constants;
+using Juris.Models.Entities;
 using Serilog;
 
 namespace Juris.Data.Seeds;
@@ -10,31 +10,31 @@ public static class AddressSeed
     {
         if (dbContext.Addresses.Any()) return;
 
-        Log.Information("Seeding addresses data ...");
-        
+        Log.Warning("Seeding addresses data ...");
+
         dbContext.Addresses.AddRange
         (
-            new Address()
+            new Address
             {
-                ProfileId = 2,
+                ProfileId = 1,
                 City = City.Chisinau,
                 AddressLine = "Students str."
             },
-            new Address()
+            new Address
             {
-                ProfileId = 3,
+                ProfileId = 2,
                 City = City.Orhei,
                 AddressLine = "OrheiLand str."
             },
-            new Address()
+            new Address
             {
-                ProfileId = 4,
+                ProfileId = 3,
                 City = City.Chisinau,
                 AddressLine = "Ginta Latina str."
             },
-            new Address()
+            new Address
             {
-                ProfileId = 5,
+                ProfileId = 4,
                 City = City.Balti,
                 AddressLine = "Stefan cel Mare str."
             }

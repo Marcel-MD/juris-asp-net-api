@@ -8,14 +8,14 @@ public static class ReviewSeed
     public static async Task Seed(DatabaseContext dbContext)
     {
         if (dbContext.Reviews.Any()) return;
-        
-        Log.Information("Seeding reviews data ...");
-    
+
+        Log.Warning("Seeding reviews data ...");
+
         dbContext.Reviews.AddRange
         (
-            new Review()
+            new Review
             {
-                ProfileId = 2,
+                ProfileId = 1,
                 Email = "mada@mailinator.com",
                 FirstName = "MadMary",
                 LastName = "Ungureanu",
@@ -23,9 +23,9 @@ public static class ReviewSeed
                 Description = "Best lawyer ever! Also knows programming!",
                 Rating = 9
             },
-            new Review()
+            new Review
             {
-                ProfileId = 3,
+                ProfileId = 2,
                 Email = "valeria@mailinator.com",
                 FirstName = "Valeria",
                 LastName = "Something",
@@ -33,9 +33,9 @@ public static class ReviewSeed
                 Description = "Very professional! Recommend to everyone!",
                 Rating = 7
             },
-            new Review()
+            new Review
             {
-                ProfileId = 2,
+                ProfileId = 1,
                 Email = "marcel@mailinator.com",
                 FirstName = "Marcel",
                 LastName = "Vlasenco",
@@ -43,9 +43,9 @@ public static class ReviewSeed
                 Description = "Saved me a lot fo time and money!",
                 Rating = 10
             },
-            new Review()
+            new Review
             {
-                ProfileId = 4,
+                ProfileId = 3,
                 Email = "stefan@mailinator.com",
                 FirstName = "Stefan",
                 LastName = "Boicu",
@@ -54,7 +54,7 @@ public static class ReviewSeed
                 Rating = 5
             }
         );
-        
+
         await dbContext.SaveChangesAsync();
     }
 }
