@@ -1,4 +1,5 @@
 ﻿using Juris.Models.Entities;
+using Juris.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,7 +14,10 @@ public class AppointmentRequestConfiguration : IEntityTypeConfiguration<Appointm
             .HasForeignKey(a => a.UserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
-        
+
+        builder.Property(a => a.Status)
+            .HasDefaultValue(AppointmentStatus.OnHold);
+
         builder.Property(a => a.CreationDate)
             .HasDefaultValueSql("GETDATE()");
     }
