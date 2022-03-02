@@ -1,5 +1,4 @@
-﻿using Juris.Models.Enums;
-using Juris.Models.Identity;
+﻿using Juris.Models.Identity;
 
 namespace Juris.Models.Entities;
 
@@ -19,7 +18,7 @@ public class AppointmentRequest : BaseEntity
 
     public string Description { get; set; }
 
-    public AppointmentStatus Status { get; set; }
+    public string Status { get; set; }
 
     public DateTime CreationDate { get; set; }
 }

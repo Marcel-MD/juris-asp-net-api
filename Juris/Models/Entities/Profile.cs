@@ -1,5 +1,4 @@
-﻿using Juris.Models.Enums;
-using Juris.Models.Identity;
+﻿using Juris.Models.Identity;
 
 namespace Juris.Models.Entities;
 
@@ -17,9 +16,9 @@ public class Profile : BaseEntity
 
     public string Description { get; set; }
 
-    public ProfileType ProfileType { get; set; }
+    public string ProfileType { get; set; }
 
-    public ProfileStatus Status { get; set; }
+    public string Status { get; set; }
 
     public int Price { get; set; }
 

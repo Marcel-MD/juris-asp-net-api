@@ -1,6 +1,6 @@
-﻿namespace Juris.Models.Enums;
+﻿namespace Juris.Models.Constants;
 
-public static class RoleConst
+public static class RoleType
 {
     public const string Admin = "Admin";
     public const string User = "User";
