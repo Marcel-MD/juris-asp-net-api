@@ -13,8 +13,6 @@ public class Profile : BaseEntity
 
     public string LastName { get; set; }
 
-    public string Email { get; set; }
-
     public string PhoneNumber { get; set; }
 
     public string Description { get; set; }
@@ -25,7 +23,7 @@ public class Profile : BaseEntity
 
     public int Price { get; set; }
 
-    public float Rating { get; set; }
+    public double Rating { get; set; }
 
     public Address Address { get; set; }
 

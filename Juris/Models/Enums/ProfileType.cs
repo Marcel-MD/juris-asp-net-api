@@ -3,5 +3,6 @@
 public enum ProfileType
 {
     Lawyer,
-    Notary
+    Notary,
+    Judge
 }
