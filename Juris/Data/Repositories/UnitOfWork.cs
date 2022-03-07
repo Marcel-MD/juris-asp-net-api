@@ -1,18 +1,19 @@
-﻿using Juris.Data.IRepositories;
-using Juris.Models.Entities;
+﻿using Juris.Models.Entities;
 
 namespace Juris.Data.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DatabaseContext _dbContext;
+    private IGenericRepository<Address> _addressRepository;
 
     private IGenericRepository<AppointmentRequest> _appointmentRequestRepository;
-    private IGenericRepository<Profile> _profileRepository;
-    private IGenericRepository<Review> _reviewRepository;
+
+    private bool _disposed;
     private IGenericRepository<Education> _educationRepository;
     private IGenericRepository<Experience> _experienceRepository;
-    private IGenericRepository<Address> _addressRepository;
+    private IGenericRepository<Profile> _profileRepository;
+    private IGenericRepository<Review> _reviewRepository;
 
     public UnitOfWork(DatabaseContext dbContext)
     {
@@ -37,21 +38,6 @@ public class UnitOfWork : IUnitOfWork
     public IGenericRepository<Address> AddressRepository =>
         _addressRepository ??= new GenericRepository<Address>(_dbContext);
 
-    private bool _disposed = false;
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                _dbContext.Dispose();
-            }
-        }
-
-        _disposed = true;
-    }
-
     public void Dispose()
     {
         Dispose(true);
@@ -61,5 +47,14 @@ public class UnitOfWork : IUnitOfWork
     public async Task Save()
     {
         await _dbContext.SaveChangesAsync();
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+            if (disposing)
+                _dbContext.Dispose();
+
+        _disposed = true;
     }
 }

@@ -1,12 +1,12 @@
+using Juris.Api.Exceptions;
 using Juris.Data;
+using Juris.Data.Repositories;
 using Juris.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 // builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("InMemory"));
 
@@ -22,7 +22,13 @@ builder.Services.AddIdentity<User, Role>(options =>
     })
     .AddEntityFrameworkStores<DatabaseContext>();
 
-builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Services
+
+// Controllers
+builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -62,5 +68,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 await DatabaseSeeder.Seed(app);
+
 
 app.Run();

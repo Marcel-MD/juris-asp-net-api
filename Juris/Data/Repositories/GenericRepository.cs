@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Juris.Data.IRepositories;
 using Juris.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -21,10 +20,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
     {
         IQueryable<T> query = _dbSet;
-        if (include != null)
-        {
-            query = include(query);
-        }
+        if (include != null) query = include(query);
 
         return await query.AsNoTracking().FirstOrDefaultAsync(expression);
     }
@@ -40,20 +36,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         IQueryable<T> query = _dbSet;
 
-        if (expression != null)
-        {
-            query = query.Where(expression);
-        }
+        if (expression != null) query = query.Where(expression);
 
-        if (include != null)
-        {
-            query = include(query);
-        }
+        if (include != null) query = include(query);
 
-        if (orderBy != null)
-        {
-            query = orderBy(query);
-        }
+        if (orderBy != null) query = orderBy(query);
 
         return await query.AsNoTracking().ToListAsync();
     }
@@ -74,14 +61,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _dbContext.Entry(entity).State = EntityState.Modified;
     }
 
-    public async Task Delete(int id)
+    public async Task Delete(long id)
     {
         var entity = await _dbSet.FindAsync(id);
 
-        if (entity != null)
-        {
-            _dbSet.Remove(entity);
-        }
+        if (entity != null) _dbSet.Remove(entity);
     }
 
     public void DeleteRange(IEnumerable<T> entities)

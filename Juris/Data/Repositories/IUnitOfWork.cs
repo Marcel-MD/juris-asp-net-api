@@ -1,6 +1,6 @@
 ﻿using Juris.Models.Entities;
 
-namespace Juris.Data.IRepositories;
+namespace Juris.Data.Repositories;
 
 public interface IUnitOfWork : IDisposable
 {

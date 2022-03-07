@@ -2,7 +2,7 @@
 using Juris.Models.Entities;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace Juris.Data.IRepositories;
+namespace Juris.Data.Repositories;
 
 public interface IGenericRepository<T> where T : BaseEntity
 {
@@ -20,7 +20,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<T> GetById(long id);
     Task Insert(T entity);
     Task InsertRange(IEnumerable<T> entities);
-    Task Delete(int id);
+    Task Delete(long id);
     void DeleteRange(IEnumerable<T> entities);
     void Update(T entity);
 }
