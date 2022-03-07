@@ -1,4 +1,5 @@
 using Juris.Api.Exceptions;
+using Juris.Api.Services;
 using Juris.Data;
 using Juris.Data.Repositories;
 using Juris.Models.Identity;
@@ -26,6 +27,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Services
+builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService>();
 
 // Controllers
 builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); });
