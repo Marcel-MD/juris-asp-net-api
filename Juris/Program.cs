@@ -1,9 +1,8 @@
+using Juris.Api.Configuration;
 using Juris.Api.Exceptions;
 using Juris.Api.Services;
 using Juris.Data;
 using Juris.Data.Repositories;
-using Juris.Models.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -11,28 +10,20 @@ using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("InMemory"));
-
+// Database Context
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("docker-mssql"))
 );
 
 // Identity
-builder.Services.AddAuthentication();
-builder.Services.AddIdentity<User, Role>(options =>
-    {
-        options.Password.RequiredLength = 6;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = false;
-        options.User.RequireUniqueEmail = true;
-    })
-    .AddEntityFrameworkStores<DatabaseContext>()
-    .AddDefaultTokenProviders();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJwt(builder.Configuration);
 
+// Services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService>();
 
 // Controllers
@@ -53,6 +44,7 @@ builder.Services.Configure<ApiBehaviorOptions>(o =>
         });
 });
 
+// Cors Policy
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("AllowAny", cors =>
@@ -62,6 +54,7 @@ builder.Services.AddCors(o =>
     );
 });
 
+// Serilog
 builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.Console()
     .WriteTo.File(
@@ -84,6 +77,7 @@ app.UseCors("AllowAny");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
