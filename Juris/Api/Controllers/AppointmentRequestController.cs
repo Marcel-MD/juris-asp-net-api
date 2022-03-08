@@ -10,15 +10,15 @@ namespace Juris.Api.Controllers;
 [ApiController]
 public class AppointmentRequestController : ControllerBase
 {
-    private readonly IAppointmentRequestService _service;
     private readonly IMapper _mapper;
+    private readonly IAppointmentRequestService _service;
 
     public AppointmentRequestController(IAppointmentRequestService service, IMapper mapper)
     {
         _service = service;
         _mapper = mapper;
     }
-    
+
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetAppointmentRequestsByUserId(long userId)
     {
@@ -41,7 +41,7 @@ public class AppointmentRequestController : ControllerBase
         await _service.DeleteRequest(id);
         return Ok();
     }
-    
+
     [HttpPatch("{id}/status/{status}")]
     public async Task<IActionResult> UpdateAppointmentRequestStatus(long id, string status)
     {

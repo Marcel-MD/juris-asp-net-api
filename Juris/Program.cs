@@ -3,6 +3,8 @@ using Juris.Api.Services;
 using Juris.Data;
 using Juris.Data.Repositories;
 using Juris.Models.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -15,13 +17,17 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("docker-mssql"))
 );
 
+// Identity
+builder.Services.AddAuthentication();
 builder.Services.AddIdentity<User, Role>(options =>
     {
         options.Password.RequiredLength = 6;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = false;
+        options.User.RequireUniqueEmail = true;
     })
-    .AddEntityFrameworkStores<DatabaseContext>();
+    .AddEntityFrameworkStores<DatabaseContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -33,6 +39,19 @@ builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService
 builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Custom Validation Errors Response
+builder.Services.Configure<ApiBehaviorOptions>(o =>
+{
+    o.InvalidModelStateResponseFactory = actionContext =>
+        new BadRequestObjectResult(new
+        {
+            errors =
+                actionContext.ModelState.Values.SelectMany(m => m.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList()
+        });
+});
 
 builder.Services.AddCors(o =>
 {

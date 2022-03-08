@@ -5,9 +5,9 @@ namespace Juris.Api.Exceptions;
 
 public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {
-    public int Order => int.MaxValue - 10;
-
-    public void OnActionExecuting(ActionExecutingContext context) { }
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+    }
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
@@ -15,16 +15,17 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
         {
             var responseBody = new
             {
-                status = (int)httpResponseException.StatusCode,
-                message = httpResponseException.ResponseMessage,
+                errors = new[] {httpResponseException.ErrorMessage}
             };
-            
+
             context.Result = new ObjectResult(responseBody)
             {
-                StatusCode = (int)httpResponseException.StatusCode,
+                StatusCode = (int) httpResponseException.StatusCode
             };
-            
+
             context.ExceptionHandled = true;
         }
     }
+
+    public int Order => int.MaxValue - 10;
 }
