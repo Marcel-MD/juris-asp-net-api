@@ -1,31 +1,50 @@
+using Juris.Api.Configuration;
+using Juris.Api.Exceptions;
+using Juris.Api.Services;
 using Juris.Data;
-using Juris.Models.Identity;
+using Juris.Data.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-// builder.Services.AddDbContext<DatabaseContext>(opt => opt.UseInMemoryDatabase("InMemory"));
-
+// Database Context
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("docker-mssql"))
 );
 
-builder.Services.AddIdentity<User, Role>(options =>
-    {
-        options.Password.RequiredLength = 6;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = false;
-    })
-    .AddEntityFrameworkStores<DatabaseContext>();
+// Identity
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJwt(builder.Configuration);
 
-builder.Services.AddControllers();
+// Services
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService>();
+
+// Controllers
+builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Custom Validation Errors Response
+builder.Services.Configure<ApiBehaviorOptions>(o =>
+{
+    o.InvalidModelStateResponseFactory = actionContext =>
+        new BadRequestObjectResult(new
+        {
+            errors =
+                actionContext.ModelState.Values.SelectMany(m => m.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList()
+        });
+});
+
+// Cors Policy
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("AllowAny", cors =>
@@ -35,6 +54,7 @@ builder.Services.AddCors(o =>
     );
 });
 
+// Serilog
 builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.Console()
     .WriteTo.File(
@@ -57,10 +77,12 @@ app.UseCors("AllowAny");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 await DatabaseSeeder.Seed(app);
+
 
 app.Run();

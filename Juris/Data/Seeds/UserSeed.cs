@@ -17,27 +17,27 @@ public static class UserSeed
         {
             new()
             {
-                UserName = "Marcel",
+                UserName = "marcelvlasenco@gmail.com",
                 Email = "marcelvlasenco@gmail.com"
             },
             new()
             {
-                UserName = "ViorelNoroc",
+                UserName = "noroc@mailinator.com",
                 Email = "noroc@mailinator.com"
             },
             new()
             {
-                UserName = "NicuSavva",
+                UserName = "savva@mailinator.com",
                 Email = "savva@mailinator.com"
             },
             new()
             {
-                UserName = "IrinaTiora",
+                UserName = "tiora@mailinator.com",
                 Email = "tiora@mailinator.com"
             },
             new()
             {
-                UserName = "StephyMatvei",
+                UserName = "stephy@mailinator.com",
                 Email = "stephy@mailinator.com"
             }
         };
