@@ -29,7 +29,7 @@ builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService
 // Controllers
 builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwagger();
 
 // Custom Validation Errors Response
 builder.Services.Configure<ApiBehaviorOptions>(o =>
