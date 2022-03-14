@@ -24,7 +24,9 @@ public static class ProfileSeed
                 ProfileType = ProfileType.Lawyer,
                 Status = ProfileStatus.Approved,
                 Price = 800,
-                Rating = 9
+                Rating = 9,
+                City = City.Chisinau,
+                Address = "Students str."
             },
             new Profile
             {
@@ -35,7 +37,9 @@ public static class ProfileSeed
                 Description = "I can play drums, better than any lawyer out there!",
                 ProfileType = ProfileType.Lawyer,
                 Price = 500,
-                Rating = 7
+                Rating = 7,
+                City = City.Orhei,
+                Address = "OrheiLand str."
             },
             new Profile
             {
@@ -47,7 +51,9 @@ public static class ProfileSeed
                 ProfileType = ProfileType.Judge,
                 Status = ProfileStatus.Approved,
                 Price = 780,
-                Rating = 8.5
+                Rating = 8.5,
+                City = City.Chisinau,
+                Address = "Ginta Latina str."
             },
             new Profile
             {
@@ -59,7 +65,9 @@ public static class ProfileSeed
                 ProfileType = ProfileType.Notary,
                 Status = ProfileStatus.Approved,
                 Price = 600,
-                Rating = 7.9
+                Rating = 7.9,
+                City = City.Balti,
+                Address = "Stefan cel Mare str."
             }
         );
 

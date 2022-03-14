@@ -197,7 +197,9 @@ namespace Juris.Migrations
                     ProfileType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "Unapproved"),
                     Price = table.Column<int>(type: "int", nullable: false),
-                    Rating = table.Column<double>(type: "float", nullable: false)
+                    Rating = table.Column<double>(type: "float", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,27 +208,6 @@ namespace Juris.Migrations
                         name: "FK_Profiles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfileId = table.Column<long>(type: "bigint", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Profiles_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -304,12 +285,6 @@ namespace Juris.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_ProfileId",
-                table: "Addresses",
-                column: "ProfileId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AppointmentRequests_UserId",
                 table: "AppointmentRequests",
                 column: "UserId");
@@ -377,9 +352,6 @@ namespace Juris.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Addresses");
-
             migrationBuilder.DropTable(
                 name: "AppointmentRequests");
 

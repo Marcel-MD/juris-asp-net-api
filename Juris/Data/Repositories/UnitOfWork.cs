@@ -5,10 +5,7 @@ namespace Juris.Data.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DatabaseContext _dbContext;
-    private IGenericRepository<Address> _addressRepository;
-
     private IGenericRepository<AppointmentRequest> _appointmentRequestRepository;
-
     private bool _disposed;
     private IGenericRepository<Education> _educationRepository;
     private IGenericRepository<Experience> _experienceRepository;
@@ -34,9 +31,6 @@ public class UnitOfWork : IUnitOfWork
 
     public IGenericRepository<Experience> ExperienceRepository =>
         _experienceRepository ??= new GenericRepository<Experience>(_dbContext);
-
-    public IGenericRepository<Address> AddressRepository =>
-        _addressRepository ??= new GenericRepository<Address>(_dbContext);
 
     public void Dispose()
     {

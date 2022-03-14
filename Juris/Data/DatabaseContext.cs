@@ -12,7 +12,6 @@ public class DatabaseContext : IdentityDbContext<User, Role, long, UserClaim, Us
     }
 
     public DbSet<Profile> Profiles { get; set; }
-    public DbSet<Address> Addresses { get; set; }
     public DbSet<Education> Educations { get; set; }
     public DbSet<Experience> Experiences { get; set; }
     public DbSet<Review> Reviews { get; set; }

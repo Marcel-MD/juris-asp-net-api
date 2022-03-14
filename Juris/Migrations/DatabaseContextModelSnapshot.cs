@@ -22,31 +22,6 @@ namespace Juris.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Juris.Models.Entities.Address", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("AddressLine")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("ProfileId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfileId")
-                        .IsUnique();
-
-                    b.ToTable("Addresses");
-                });
-
             modelBuilder.Entity("Juris.Models.Entities.AppointmentRequest", b =>
                 {
                     b.Property<long>("Id")
@@ -157,6 +132,12 @@ namespace Juris.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -440,17 +421,6 @@ namespace Juris.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Juris.Models.Entities.Address", b =>
-                {
-                    b.HasOne("Juris.Models.Entities.Profile", "Profile")
-                        .WithOne("Address")
-                        .HasForeignKey("Juris.Models.Entities.Address", "ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profile");
-                });
-
             modelBuilder.Entity("Juris.Models.Entities.AppointmentRequest", b =>
                 {
                     b.HasOne("Juris.Models.Identity.User", "User")
@@ -563,8 +533,6 @@ namespace Juris.Migrations
 
             modelBuilder.Entity("Juris.Models.Entities.Profile", b =>
                 {
-                    b.Navigation("Address");
-
                     b.Navigation("Educations");
 
                     b.Navigation("Experiences");

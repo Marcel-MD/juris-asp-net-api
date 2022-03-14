@@ -19,7 +19,6 @@ public static class DatabaseSeeder
 
         await AppointmentRequestSeed.Seed(dbContext);
         await ProfileSeed.Seed(dbContext);
-        await AddressSeed.Seed(dbContext);
         await EducationSeed.Seed(dbContext);
         await ExperienceSeed.Seed(dbContext);
         await ReviewSeed.Seed(dbContext);
