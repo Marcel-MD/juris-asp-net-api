@@ -4,7 +4,7 @@ namespace Juris.Api.Services;
 
 public interface IProfileService
 {
-    Task<IList<Profile>> GetAllProfiles();
+    Task<IEnumerable<Profile>> GetAllProfiles();
     Task<Profile> GetProfileById(long id);
     Task CreateProfile(Profile profile, long userId);
     Task CreateEmptyProfile(long userId);

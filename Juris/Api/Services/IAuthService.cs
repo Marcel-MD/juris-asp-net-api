@@ -1,6 +1,4 @@
-﻿using Juris.Api.Dtos.User;
-
-namespace Juris.Api.Services;
+﻿namespace Juris.Api.Services;
 
 public interface IAuthService
 {

@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Juris.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Juris.Data.Repositories;
 
@@ -16,33 +15,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _dbSet = _dbContext.Set<T>();
     }
 
-    public async Task<T> Get(Expression<Func<T, bool>> expression,
-        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
-    {
-        IQueryable<T> query = _dbSet;
-        if (include != null) query = include(query);
-
-        return await query.AsNoTracking().FirstOrDefaultAsync(expression);
-    }
-
     public async Task<T> GetById(long id)
     {
         return await _dbContext.FindAsync<T>(id);
-    }
-
-    public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null,
-        Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
-    {
-        IQueryable<T> query = _dbSet;
-
-        if (expression != null) query = query.Where(expression);
-
-        if (include != null) query = include(query);
-
-        if (orderBy != null) query = orderBy(query);
-
-        return await query.AsNoTracking().ToListAsync();
     }
 
     public async Task Insert(T entity)
@@ -71,5 +46,34 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public void DeleteRange(IEnumerable<T> entities)
     {
         _dbSet.RemoveRange(entities);
+    }
+
+    public async Task<T> Get(Expression<Func<T, bool>> expression,
+        params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _dbSet;
+
+        if (includes != null)
+            query = includes.Aggregate(query,
+                (current, include) => current.Include(include));
+
+        return await query.AsNoTracking().FirstOrDefaultAsync(expression);
+    }
+
+    public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _dbSet;
+
+        if (expression != null) query = query.Where(expression);
+
+        if (includes != null)
+            query = includes.Aggregate(query,
+                (current, include) => current.Include(include));
+
+        if (orderBy != null) query = orderBy(query);
+
+        return await query.AsNoTracking().ToListAsync();
     }
 }

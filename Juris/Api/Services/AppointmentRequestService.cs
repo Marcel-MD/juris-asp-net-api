@@ -20,7 +20,7 @@ public class AppointmentRequestService : IAppointmentRequestService
         _userManager = userManager;
     }
 
-    public async Task<IList<AppointmentRequest>> GetAllRequests(long userId)
+    public async Task<IEnumerable<AppointmentRequest>> GetAllRequests(long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)

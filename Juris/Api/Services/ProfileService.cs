@@ -25,34 +25,6 @@ public class ProfileService : IProfileService
         _userManager = userManager;
     }
 
-    public async Task<IList<Profile>> GetAllProfiles()
-    {
-        var response = await _profileRepository.GetAll();
-
-        return response;
-    }
-
-    public async Task<Profile> GetProfileById(long id)
-    {
-        return await _profileRepository.GetById(id);
-    }
-
-    public async Task CreateProfile(Profile profile, long userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId.ToString());
-        if (user == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={userId} not found");
-
-        var existingProfile = await _profileRepository.Get(p => p.UserId == userId);
-        if (existingProfile != null)
-            throw new HttpResponseException(HttpStatusCode.BadRequest, $"User with id={userId} already has a profile");
-
-        profile.UserId = userId;
-
-        await _profileRepository.Insert(profile);
-        await _unitOfWork.Save();
-    }
-
     public async Task CreateEmptyProfile(long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -81,29 +53,6 @@ public class ProfileService : IProfileService
         await _unitOfWork.Save();
     }
 
-    public async Task UpdateProfile(Profile profile, long profileId, long userId)
-    {
-        var existingProfile = await _profileRepository.GetById(profileId);
-        if (existingProfile == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={profileId} not found");
-
-        if (existingProfile.UserId != userId)
-            throw new HttpResponseException(HttpStatusCode.Unauthorized,
-                $"Unauthorized to update profile id={profileId}");
-
-        existingProfile.FirstName = profile.FirstName;
-        existingProfile.LastName = profile.LastName;
-        existingProfile.Description = profile.Description;
-        existingProfile.PhoneNumber = profile.PhoneNumber;
-        existingProfile.Price = profile.Price;
-        existingProfile.ProfileCategoryId = profile.ProfileCategoryId;
-        existingProfile.Address = profile.Address;
-        existingProfile.CityId = profile.CityId;
-
-        _profileRepository.Update(existingProfile);
-        await _unitOfWork.Save();
-    }
-
     public async Task DeleteProfile(long profileId, long userId)
     {
         var profile = await _profileRepository.GetById(profileId);
@@ -127,6 +76,78 @@ public class ProfileService : IProfileService
         profile.Status = status;
 
         _profileRepository.Update(profile);
+        await _unitOfWork.Save();
+    }
+
+    public async Task<IEnumerable<Profile>> GetAllProfiles()
+    {
+        var response = await _profileRepository.GetAll(
+            null, null,
+            p => p.City, p => p.ProfileCategory);
+
+        return response;
+    }
+
+    public async Task<Profile> GetProfileById(long id)
+    {
+        return await _profileRepository.Get(p => p.Id == id,
+            p => p.City, p => p.ProfileCategory, p => p.Educations, p => p.Experiences, p => p.Reviews);
+    }
+
+    public async Task CreateProfile(Profile profile, long userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (user == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={userId} not found");
+
+        var existingProfile = await _profileRepository.Get(p => p.UserId == userId);
+        if (existingProfile != null)
+            throw new HttpResponseException(HttpStatusCode.BadRequest, $"User with id={userId} already has a profile");
+
+        var city = await _cityRepository.GetById(profile.CityId);
+        if (city == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound, $"City with id={profile.CityId} not found");
+
+        var category = await _categoryRepository.GetById(profile.ProfileCategoryId);
+        if (category == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                $"Profile Category with id={profile.ProfileCategoryId} not found");
+
+        profile.UserId = userId;
+
+        await _profileRepository.Insert(profile);
+        await _unitOfWork.Save();
+    }
+
+    public async Task UpdateProfile(Profile profile, long profileId, long userId)
+    {
+        var existingProfile = await _profileRepository.GetById(profileId);
+        if (existingProfile == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={profileId} not found");
+
+        if (existingProfile.UserId != userId)
+            throw new HttpResponseException(HttpStatusCode.Unauthorized,
+                $"Unauthorized to update profile id={profileId}");
+
+        var city = await _cityRepository.GetById(profile.CityId);
+        if (city == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound, $"City with id={profile.CityId} not found");
+
+        var category = await _categoryRepository.GetById(profile.ProfileCategoryId);
+        if (category == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                $"Profile Category with id={profile.ProfileCategoryId} not found");
+
+        existingProfile.FirstName = profile.FirstName;
+        existingProfile.LastName = profile.LastName;
+        existingProfile.Description = profile.Description;
+        existingProfile.PhoneNumber = profile.PhoneNumber;
+        existingProfile.Price = profile.Price;
+        existingProfile.ProfileCategoryId = profile.ProfileCategoryId;
+        existingProfile.Address = profile.Address;
+        existingProfile.CityId = profile.CityId;
+
+        _profileRepository.Update(existingProfile);
         await _unitOfWork.Save();
     }
 }

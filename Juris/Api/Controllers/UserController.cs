@@ -12,10 +12,10 @@ namespace Juris.Api.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
     private readonly IAuthService _authService;
     private readonly IMapper _mapper;
+    private readonly RoleManager<Role> _roleManager;
+    private readonly UserManager<User> _userManager;
 
     public UserController(UserManager<User> userManager, RoleManager<Role> roleManager,
         IAuthService authService, IMapper mapper)
@@ -25,7 +25,7 @@ public class UserController : ControllerBase
         _authService = authService;
         _mapper = mapper;
     }
-    
+
     [HttpPost("register")]
     public async Task<IActionResult> Register(CreateUserDto dto)
     {
@@ -33,33 +33,24 @@ public class UserController : ControllerBase
         user.UserName = user.Email;
         var result = await _userManager.CreateAsync(user, dto.Password);
 
-        if (!result.Succeeded)
-        {
-            return BadRequest(new {errors = result.Errors.Select(e => e.Description)});
-        }
-        
-        if(await _roleManager.RoleExistsAsync(RoleType.User))
-        {
-            await _userManager.AddToRoleAsync(user, RoleType.User);
-        }
+        if (!result.Succeeded) return BadRequest(new {errors = result.Errors.Select(e => e.Description)});
+
+        if (await _roleManager.RoleExistsAsync(RoleType.User)) await _userManager.AddToRoleAsync(user, RoleType.User);
 
         return Ok();
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(CreateUserDto dto)
     {
-        if (!await _authService.ValidateUser(dto.Email, dto.Password))
-        {
-            return Unauthorized();
-        }
+        if (!await _authService.ValidateUser(dto.Email, dto.Password)) return Unauthorized();
 
         var user = await _userManager.FindByEmailAsync(dto.Email);
         var roles = await _userManager.GetRolesAsync(user);
         var userTokenDto = _mapper.Map<UserTokenDto>(user);
         userTokenDto.Roles = roles.ToList();
         userTokenDto.Token = await _authService.CreateToken();
-        
+
         return Ok(userTokenDto);
     }
 }

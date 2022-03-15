@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Juris.Models.Entities;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Juris.Data.Repositories;
 
@@ -9,13 +8,11 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<IList<T>> GetAll(
         Expression<Func<T, bool>> expression = null,
         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null
+        params Expression<Func<T, object>>[] includes
     );
 
-    Task<T> Get(
-        Expression<Func<T, bool>> expression,
-        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null
-    );
+    Task<T> Get(Expression<Func<T, bool>> expression,
+        params Expression<Func<T, object>>[] includes);
 
     Task<T> GetById(long id);
     Task Insert(T entity);
