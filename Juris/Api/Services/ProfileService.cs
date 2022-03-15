@@ -90,8 +90,13 @@ public class ProfileService : IProfileService
 
     public async Task<Profile> GetProfileById(long id)
     {
-        return await _profileRepository.Get(p => p.Id == id,
+        var profile = await _profileRepository.Get(p => p.Id == id,
             p => p.City, p => p.ProfileCategory, p => p.Educations, p => p.Experiences, p => p.Reviews);
+
+        if (profile == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={id} not found");
+
+        return profile;
     }
 
     public async Task CreateProfile(Profile profile, long userId)
@@ -148,6 +153,37 @@ public class ProfileService : IProfileService
         existingProfile.CityId = profile.CityId;
 
         _profileRepository.Update(existingProfile);
+        await _unitOfWork.Save();
+    }
+
+    public async Task<IEnumerable<City>> GetCities()
+    {
+        return await _cityRepository.GetAll();
+    }
+
+    public async Task CreateCity(City city)
+    {
+        var cit = await _cityRepository.Get(c => c.Name == city.Name);
+        if (cit != null)
+            throw new HttpResponseException(HttpStatusCode.BadRequest, $"City with name={city.Name} already exists");
+
+        await _cityRepository.Insert(city);
+        await _unitOfWork.Save();
+    }
+
+    public async Task<IEnumerable<ProfileCategory>> GetProfileCategories()
+    {
+        return await _categoryRepository.GetAll();
+    }
+
+    public async Task CreateProfileCategory(ProfileCategory category)
+    {
+        var cat = await _categoryRepository.Get(c => c.Category == category.Category);
+        if (cat != null)
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                $"Category with name={category.Category} already exists");
+
+        await _categoryRepository.Insert(category);
         await _unitOfWork.Save();
     }
 }

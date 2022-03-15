@@ -31,7 +31,7 @@ public class AppointmentRequestController : BaseController
     }
 
     [HttpPost("{userId}")]
-    public async Task<IActionResult> PostAppointmentRequest(long userId, CreateAppointmentRequestDto dto)
+    public async Task<IActionResult> CreateAppointmentRequest(long userId, CreateAppointmentRequestDto dto)
     {
         var appointmentRequest = _mapper.Map<AppointmentRequest>(dto);
         await _service.CreateRequest(appointmentRequest, userId);
