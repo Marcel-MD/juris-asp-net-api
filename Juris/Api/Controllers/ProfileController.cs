@@ -18,15 +18,15 @@ public class ProfileController : BaseController
         _service = service;
         _mapper = mapper;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetAllProfiles()
     {
         var result = await _service.GetAllProfiles();
-        var resultDto = _mapper.Map<IList<ProfileDto>>(result);
+        var resultDto = _mapper.Map<IEnumerable<ListProfileDto>>(result);
         return Ok(resultDto);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProfileById(long id)
     {
@@ -43,7 +43,7 @@ public class ProfileController : BaseController
         await _service.CreateProfile(profile, GetCurrentUserId());
         return Ok();
     }
-    
+
     [Authorize]
     [HttpPost("empty")]
     public async Task<IActionResult> CreateEmptyProfile()
@@ -51,7 +51,7 @@ public class ProfileController : BaseController
         await _service.CreateEmptyProfile(GetCurrentUserId());
         return Ok();
     }
-    
+
     [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateProfile(long id, UpdateProfileDto dto)

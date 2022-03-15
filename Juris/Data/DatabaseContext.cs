@@ -16,6 +16,8 @@ public class DatabaseContext : IdentityDbContext<User, Role, long, UserClaim, Us
     public DbSet<Experience> Experiences { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<AppointmentRequest> AppointmentRequests { get; set; }
+    public DbSet<ProfileCategory> ProfileCategories { get; set; }
+    public DbSet<City> Cities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

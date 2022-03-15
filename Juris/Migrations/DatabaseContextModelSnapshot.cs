@@ -65,6 +65,22 @@ namespace Juris.Migrations
                     b.ToTable("AppointmentRequests");
                 });
 
+            modelBuilder.Entity("Juris.Models.Entities.City", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("Juris.Models.Entities.Education", b =>
                 {
                     b.Property<long>("Id")
@@ -136,8 +152,8 @@ namespace Juris.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("CityId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -154,8 +170,8 @@ namespace Juris.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProfileType")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("ProfileCategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -170,10 +186,30 @@ namespace Juris.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("ProfileCategoryId");
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("Juris.Models.Entities.ProfileCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileCategories");
                 });
 
             modelBuilder.Entity("Juris.Models.Entities.Review", b =>
@@ -456,11 +492,27 @@ namespace Juris.Migrations
 
             modelBuilder.Entity("Juris.Models.Entities.Profile", b =>
                 {
+                    b.HasOne("Juris.Models.Entities.City", "City")
+                        .WithMany("Profiles")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Juris.Models.Entities.ProfileCategory", "ProfileCategory")
+                        .WithMany("Profiles")
+                        .HasForeignKey("ProfileCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Juris.Models.Identity.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("Juris.Models.Entities.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("ProfileCategory");
 
                     b.Navigation("User");
                 });
@@ -531,6 +583,11 @@ namespace Juris.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Juris.Models.Entities.City", b =>
+                {
+                    b.Navigation("Profiles");
+                });
+
             modelBuilder.Entity("Juris.Models.Entities.Profile", b =>
                 {
                     b.Navigation("Educations");
@@ -538,6 +595,11 @@ namespace Juris.Migrations
                     b.Navigation("Experiences");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("Juris.Models.Entities.ProfileCategory", b =>
+                {
+                    b.Navigation("Profiles");
                 });
 
             modelBuilder.Entity("Juris.Models.Identity.Role", b =>

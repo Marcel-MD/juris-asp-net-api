@@ -21,11 +21,11 @@ public static class ProfileSeed
                 LastName = "Noroc",
                 PhoneNumber = "060989543",
                 Description = "I am a great lawyer, look at me!",
-                ProfileType = ProfileType.Lawyer,
+                ProfileCategoryId = 1,
                 Status = ProfileStatus.Approved,
                 Price = 800,
                 Rating = 9,
-                City = City.Chisinau,
+                CityId = 1,
                 Address = "Students str."
             },
             new Profile
@@ -35,10 +35,10 @@ public static class ProfileSeed
                 LastName = "Savva",
                 PhoneNumber = "060989678",
                 Description = "I can play drums, better than any lawyer out there!",
-                ProfileType = ProfileType.Lawyer,
+                ProfileCategoryId = 1,
                 Price = 500,
                 Rating = 7,
-                City = City.Orhei,
+                CityId = 4,
                 Address = "OrheiLand str."
             },
             new Profile
@@ -48,11 +48,11 @@ public static class ProfileSeed
                 LastName = "Tiora",
                 PhoneNumber = "060989974",
                 Description = "I am a great at judging food!",
-                ProfileType = ProfileType.Judge,
+                ProfileCategoryId = 3,
                 Status = ProfileStatus.Approved,
                 Price = 780,
                 Rating = 8.5,
-                City = City.Chisinau,
+                CityId = 1,
                 Address = "Ginta Latina str."
             },
             new Profile
@@ -62,11 +62,11 @@ public static class ProfileSeed
                 LastName = "Matvei",
                 PhoneNumber = "060986754",
                 Description = "I am the best notary in the town!",
-                ProfileType = ProfileType.Notary,
+                ProfileCategoryId = 2,
                 Status = ProfileStatus.Approved,
                 Price = 600,
                 Rating = 7.9,
-                City = City.Balti,
+                CityId = 2,
                 Address = "Stefan cel Mare str."
             }
         );

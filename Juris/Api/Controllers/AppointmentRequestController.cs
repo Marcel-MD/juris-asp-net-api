@@ -26,7 +26,7 @@ public class AppointmentRequestController : BaseController
         if (userId != GetCurrentUserId()) return Unauthorized();
 
         var result = await _service.GetAllRequests(userId);
-        var resultDto = _mapper.Map<IList<AppointmentRequestDto>>(result);
+        var resultDto = _mapper.Map<IEnumerable<AppointmentRequestDto>>(result);
         return Ok(resultDto);
     }
 

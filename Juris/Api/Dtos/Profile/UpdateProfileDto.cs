@@ -12,11 +12,11 @@ public class UpdateProfileDto
 
     [Required] [MinLength(16)] public string Description { get; set; }
 
-    [Required] public string ProfileType { get; set; }
-
     [Required] public int Price { get; set; }
 
-    [Required] public string City { get; set; }
-
     [Required] [MinLength(8)] public string Address { get; set; }
+
+    [Required] public long ProfileCategoryId { get; set; }
+
+    [Required] public long CityId { get; set; }
 }
