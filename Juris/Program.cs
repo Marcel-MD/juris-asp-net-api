@@ -28,6 +28,7 @@ builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IEducationService, EducationService>();
 builder.Services.AddScoped<IExperienceService, ExperienceService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 // Controllers
 builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); });
