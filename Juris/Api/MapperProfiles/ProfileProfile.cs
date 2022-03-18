@@ -1,13 +1,14 @@
-﻿using Juris.Api.Dtos.Profile;
-using Juris.Models.Entities;
+﻿using AutoMapper;
+using Juris.Api.Dtos.Profile;
 
 namespace Juris.Api.MapperProfiles;
 
-public class ProfileProfile : AutoMapper.Profile
+public class ProfileProfile : Profile
 {
     public ProfileProfile()
     {
-        CreateMap<Profile, ProfileDto>();
-        CreateMap<Profile, UpdateProfileDto>().ReverseMap();
+        CreateMap<Models.Entities.Profile, ProfileDto>();
+        CreateMap<Models.Entities.Profile, ListProfileDto>();
+        CreateMap<UpdateProfileDto, Models.Entities.Profile>();
     }
 }

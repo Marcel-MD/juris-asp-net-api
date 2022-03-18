@@ -1,12 +1,9 @@
 ﻿using Juris.Api.Dtos.City;
-using Juris.Api.Dtos.Education;
-using Juris.Api.Dtos.Experience;
 using Juris.Api.Dtos.ProfileCategory;
-using Juris.Api.Dtos.Review;
 
 namespace Juris.Api.Dtos.Profile;
 
-public class ProfileDto
+public class ListProfileDto
 {
     public long Id { get; set; }
 
@@ -26,13 +23,7 @@ public class ProfileDto
 
     public string Address { get; set; }
 
-    public IEnumerable<EducationDto> Educations { get; set; }
-
-    public IEnumerable<ExperienceDto> Experiences { get; set; }
-
-    public IEnumerable<ReviewDto> Reviews { get; set; }
-
     public ProfileCategoryDto ProfileCategory { get; set; }
-
+    
     public CityDto City { get; set; }
 }

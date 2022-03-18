@@ -9,7 +9,8 @@ public interface IUnitOfWork : IDisposable
     IGenericRepository<Review> ReviewRepository { get; }
     IGenericRepository<Education> EducationRepository { get; }
     IGenericRepository<Experience> ExperienceRepository { get; }
-    IGenericRepository<Address> AddressRepository { get; }
+    IGenericRepository<ProfileCategory> ProfileCategoryRepository { get; }
+    IGenericRepository<City> CityRepository { get; }
 
     Task Save();
 }

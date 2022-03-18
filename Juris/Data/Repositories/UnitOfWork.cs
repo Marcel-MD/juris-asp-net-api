@@ -5,13 +5,13 @@ namespace Juris.Data.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DatabaseContext _dbContext;
-    private IGenericRepository<Address> _addressRepository;
 
     private IGenericRepository<AppointmentRequest> _appointmentRequestRepository;
-
+    private IGenericRepository<City> _cityRepository;
     private bool _disposed;
     private IGenericRepository<Education> _educationRepository;
     private IGenericRepository<Experience> _experienceRepository;
+    private IGenericRepository<ProfileCategory> _profileCategoryRepository;
     private IGenericRepository<Profile> _profileRepository;
     private IGenericRepository<Review> _reviewRepository;
 
@@ -35,8 +35,11 @@ public class UnitOfWork : IUnitOfWork
     public IGenericRepository<Experience> ExperienceRepository =>
         _experienceRepository ??= new GenericRepository<Experience>(_dbContext);
 
-    public IGenericRepository<Address> AddressRepository =>
-        _addressRepository ??= new GenericRepository<Address>(_dbContext);
+    public IGenericRepository<ProfileCategory> ProfileCategoryRepository =>
+        _profileCategoryRepository ??= new GenericRepository<ProfileCategory>(_dbContext);
+
+    public IGenericRepository<City> CityRepository =>
+        _cityRepository ??= new GenericRepository<City>(_dbContext);
 
     public void Dispose()
     {

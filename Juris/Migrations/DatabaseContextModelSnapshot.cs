@@ -22,33 +22,6 @@ namespace Juris.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Juris.Models.Entities.Address", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("AddressLine")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("ProfileId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfileId")
-                        .IsUnique();
-
-                    b.ToTable("Addresses");
-                });
-
             modelBuilder.Entity("Juris.Models.Entities.AppointmentRequest", b =>
                 {
                     b.Property<long>("Id")
@@ -63,27 +36,21 @@ namespace Juris.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("OnHold");
@@ -98,6 +65,22 @@ namespace Juris.Migrations
                     b.ToTable("AppointmentRequests");
                 });
 
+            modelBuilder.Entity("Juris.Models.Entities.City", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("Juris.Models.Entities.Education", b =>
                 {
                     b.Property<long>("Id")
@@ -110,14 +93,12 @@ namespace Juris.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Institution")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ProfileId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Speciality")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
@@ -139,14 +120,12 @@ namespace Juris.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("Company")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Position")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ProfileId")
@@ -170,34 +149,34 @@ namespace Juris.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("CityId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProfileType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("ProfileCategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("Unapproved");
@@ -207,10 +186,30 @@ namespace Juris.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("ProfileCategoryId");
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("Juris.Models.Entities.ProfileCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileCategories");
                 });
 
             modelBuilder.Entity("Juris.Models.Entities.Review", b =>
@@ -225,23 +224,18 @@ namespace Juris.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ProfileId")
@@ -463,17 +457,6 @@ namespace Juris.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Juris.Models.Entities.Address", b =>
-                {
-                    b.HasOne("Juris.Models.Entities.Profile", "Profile")
-                        .WithOne("Address")
-                        .HasForeignKey("Juris.Models.Entities.Address", "ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profile");
-                });
-
             modelBuilder.Entity("Juris.Models.Entities.AppointmentRequest", b =>
                 {
                     b.HasOne("Juris.Models.Identity.User", "User")
@@ -509,11 +492,27 @@ namespace Juris.Migrations
 
             modelBuilder.Entity("Juris.Models.Entities.Profile", b =>
                 {
+                    b.HasOne("Juris.Models.Entities.City", "City")
+                        .WithMany("Profiles")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Juris.Models.Entities.ProfileCategory", "ProfileCategory")
+                        .WithMany("Profiles")
+                        .HasForeignKey("ProfileCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Juris.Models.Identity.User", "User")
                         .WithOne("Profile")
                         .HasForeignKey("Juris.Models.Entities.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("ProfileCategory");
 
                     b.Navigation("User");
                 });
@@ -584,16 +583,23 @@ namespace Juris.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Juris.Models.Entities.City", b =>
+                {
+                    b.Navigation("Profiles");
+                });
+
             modelBuilder.Entity("Juris.Models.Entities.Profile", b =>
                 {
-                    b.Navigation("Address")
-                        .IsRequired();
-
                     b.Navigation("Educations");
 
                     b.Navigation("Experiences");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("Juris.Models.Entities.ProfileCategory", b =>
+                {
+                    b.Navigation("Profiles");
                 });
 
             modelBuilder.Entity("Juris.Models.Identity.Role", b =>
@@ -605,8 +611,7 @@ namespace Juris.Migrations
                 {
                     b.Navigation("AppointmentRequests");
 
-                    b.Navigation("Profile")
-                        .IsRequired();
+                    b.Navigation("Profile");
 
                     b.Navigation("Roles");
                 });

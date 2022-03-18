@@ -2,13 +2,13 @@
 using Juris.Api.Dtos.AppointmentRequest;
 using Juris.Api.Services;
 using Juris.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juris.Api.Controllers;
 
 [Route("api/appointment")]
-[ApiController]
-public class AppointmentRequestController : ControllerBase
+public class AppointmentRequestController : BaseController
 {
     private readonly IMapper _mapper;
     private readonly IAppointmentRequestService _service;
@@ -19,33 +19,38 @@ public class AppointmentRequestController : ControllerBase
         _mapper = mapper;
     }
 
+    [Authorize]
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetAppointmentRequestsByUserId(long userId)
     {
+        if (userId != GetCurrentUserId()) return Unauthorized();
+
         var result = await _service.GetAllRequests(userId);
-        var resultDto = _mapper.Map<IList<AppointmentRequestDto>>(result);
+        var resultDto = _mapper.Map<IEnumerable<AppointmentRequestDto>>(result);
         return Ok(resultDto);
     }
 
     [HttpPost("{userId}")]
-    public async Task<IActionResult> PostAppointmentRequest(long userId, CreateAppointmentRequestDto dto)
+    public async Task<IActionResult> CreateAppointmentRequest(long userId, CreateAppointmentRequestDto dto)
     {
         var appointmentRequest = _mapper.Map<AppointmentRequest>(dto);
         await _service.CreateRequest(appointmentRequest, userId);
         return Ok();
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAppointmentRequest(long id)
     {
-        await _service.DeleteRequest(id);
+        await _service.DeleteRequest(id, GetCurrentUserId());
         return Ok();
     }
 
+    [Authorize]
     [HttpPatch("{id}/status/{status}")]
     public async Task<IActionResult> UpdateAppointmentRequestStatus(long id, string status)
     {
-        await _service.UpdateRequestStatus(status, id);
+        await _service.UpdateRequestStatus(status, id, GetCurrentUserId());
         return Ok();
     }
 }

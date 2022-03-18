@@ -15,6 +15,16 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(p => p.ProfileCategory)
+            .WithMany(c => c.Profiles)
+            .HasForeignKey(p => p.ProfileCategoryId)
+            .IsRequired();
+
+        builder.HasOne(p => p.City)
+            .WithMany(c => c.Profiles)
+            .HasForeignKey(p => p.CityId)
+            .IsRequired();
+
         builder.Property(p => p.Status)
             .HasDefaultValue(ProfileStatus.Unapproved);
     }
