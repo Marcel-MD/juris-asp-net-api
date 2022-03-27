@@ -26,6 +26,25 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
             .IsRequired();
 
         builder.Property(p => p.Status)
+            .HasMaxLength(50)
             .HasDefaultValue(ProfileStatus.Unapproved);
+
+        builder.Property(p => p.Description)
+            .HasMaxLength(250);
+
+        builder.Property(p => p.FirstName)
+            .HasMaxLength(50);
+
+        builder.Property(p => p.LastName)
+            .HasMaxLength(50);
+
+        builder.Property(p => p.FirstName)
+            .HasMaxLength(50);
+
+        builder.Property(p => p.PhoneNumber)
+            .HasMaxLength(50);
+
+        builder.Property(p => p.Address)
+            .HasMaxLength(100);
     }
 }

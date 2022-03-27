@@ -16,7 +16,26 @@ public class AppointmentRequestConfiguration : IEntityTypeConfiguration<Appointm
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(a => a.Status)
+            .HasMaxLength(50)
             .HasDefaultValue(AppointmentStatus.OnHold);
+
+        builder.Property(a => a.Description)
+            .HasMaxLength(250);
+
+        builder.Property(a => a.Email)
+            .HasMaxLength(50);
+
+        builder.Property(a => a.FirstName)
+            .HasMaxLength(50);
+
+        builder.Property(a => a.LastName)
+            .HasMaxLength(50);
+
+        builder.Property(a => a.FirstName)
+            .HasMaxLength(50);
+
+        builder.Property(a => a.PhoneNumber)
+            .HasMaxLength(50);
 
         builder.Property(a => a.CreationDate)
             .HasDefaultValueSql("GETDATE()");

@@ -13,5 +13,11 @@ public class EducationConfiguration : IEntityTypeConfiguration<Education>
             .HasForeignKey(e => e.ProfileId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(e => e.Institution)
+            .HasMaxLength(50);
+
+        builder.Property(e => e.Speciality)
+            .HasMaxLength(50);
     }
 }

@@ -13,5 +13,11 @@ public class ExperienceConfigurations : IEntityTypeConfiguration<Experience>
             .HasForeignKey(e => e.ProfileId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(e => e.Company)
+            .HasMaxLength(50);
+
+        builder.Property(e => e.Position)
+            .HasMaxLength(50);
     }
 }
