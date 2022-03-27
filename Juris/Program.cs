@@ -15,6 +15,10 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("docker-mssql"))
 );
 
+// Mail
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddTransient<IMailService, MailService>();
+
 // Identity
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwt(builder.Configuration);

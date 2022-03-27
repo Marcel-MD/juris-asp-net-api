@@ -5,6 +5,7 @@ using Juris.Models.Constants;
 using Juris.Models.Entities;
 using Juris.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
 
 namespace Juris.Api.Services;
 
@@ -12,17 +13,19 @@ public class ProfileService : IProfileService
 {
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
     private readonly IGenericRepository<City> _cityRepository;
+    private readonly IMailService _mailService;
     private readonly IGenericRepository<Profile> _profileRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
 
-    public ProfileService(IUnitOfWork unitOfWork, UserManager<User> userManager)
+    public ProfileService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService)
     {
         _unitOfWork = unitOfWork;
         _profileRepository = unitOfWork.ProfileRepository;
         _cityRepository = _unitOfWork.CityRepository;
         _categoryRepository = _unitOfWork.ProfileCategoryRepository;
         _userManager = userManager;
+        _mailService = mailService;
     }
 
     public async Task CreateEmptyProfile(long userId)
@@ -73,10 +76,27 @@ public class ProfileService : IProfileService
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={profileId} not found");
 
+        var user = await _userManager.FindByIdAsync(profile.UserId.ToString());
+        if (user == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={profile.UserId} not found");
+
         profile.Status = status;
 
         _profileRepository.Update(profile);
         await _unitOfWork.Save();
+        try
+        {
+            await _mailService.SendAsync(
+                user.Email,
+                "Profile Status Updated",
+                $"Status of your profile on Juris has changed to <strong>{status}</strong>.");
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+            throw new HttpResponseException(HttpStatusCode.FailedDependency,
+                "Could not send notification email to user");
+        }
     }
 
     public async Task<IEnumerable<Profile>> GetAllProfiles()
@@ -151,6 +171,7 @@ public class ProfileService : IProfileService
         existingProfile.ProfileCategoryId = profile.ProfileCategoryId;
         existingProfile.Address = profile.Address;
         existingProfile.CityId = profile.CityId;
+        existingProfile.Status = ProfileStatus.Unapproved;
 
         _profileRepository.Update(existingProfile);
         await _unitOfWork.Save();
