@@ -1,10 +1,11 @@
-﻿using Juris.Models.Entities;
+﻿using Juris.Api.Parameters;
+using Juris.Models.Entities;
 
 namespace Juris.Api.Services;
 
 public interface IProfileService
 {
-    Task<IEnumerable<Profile>> GetAllProfiles();
+    Task<IEnumerable<Profile>> GetAllProfiles(ProfileParameters parameters);
     Task<Profile> GetProfileById(long id);
     Task CreateProfile(Profile profile, long userId);
     Task CreateEmptyProfile(long userId);

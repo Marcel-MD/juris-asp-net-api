@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System.Linq.Expressions;
+using System.Net;
 using Juris.Api.Exceptions;
+using Juris.Api.Parameters;
 using Juris.Data.Repositories;
 using Juris.Models.Constants;
 using Juris.Models.Entities;
@@ -99,10 +101,32 @@ public class ProfileService : IProfileService
         }
     }
 
-    public async Task<IEnumerable<Profile>> GetAllProfiles()
+    public async Task<IEnumerable<Profile>> GetAllProfiles(ProfileParameters parameters)
     {
+        Expression<Func<Profile, bool>> filter = profile =>
+            (parameters.Status == null || profile.Status == parameters.Status) &&
+            (parameters.CityId == null || profile.CityId == parameters.CityId.Value) &&
+            (parameters.CategoryId == null || profile.ProfileCategoryId == parameters.CategoryId.Value);
+
+        Func<IQueryable<Profile>, IOrderedQueryable<Profile>> orderBy = null;
+        switch (parameters.SortBy)
+        {
+            case ProfileSortBy.PriceAsc:
+                orderBy = p => p.OrderBy(p => p.Price);
+                break;
+            case ProfileSortBy.PriceDesc:
+                orderBy = p => p.OrderByDescending(p => p.Price);
+                break;
+            case ProfileSortBy.RatingAsc:
+                orderBy = p => p.OrderBy(p => p.Rating);
+                break;
+            case ProfileSortBy.RatingDesc:
+                orderBy = p => p.OrderByDescending(p => p.Rating);
+                break;
+        }
+
         var response = await _profileRepository.GetAll(
-            null, null,
+            filter, orderBy, parameters.PageNumber, parameters.PageSize,
             p => p.City, p => p.ProfileCategory);
 
         return response;

@@ -2,6 +2,7 @@
 using Juris.Api.Dtos.City;
 using Juris.Api.Dtos.Profile;
 using Juris.Api.Dtos.ProfileCategory;
+using Juris.Api.Parameters;
 using Juris.Api.Services;
 using Juris.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -23,9 +24,9 @@ public class ProfileController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllProfiles()
+    public async Task<IActionResult> GetAllProfiles([FromQuery] ProfileParameters parameters)
     {
-        var result = await _service.GetAllProfiles();
+        var result = await _service.GetAllProfiles(parameters);
         var resultDto = _mapper.Map<IEnumerable<ListProfileDto>>(result);
         return Ok(resultDto);
     }

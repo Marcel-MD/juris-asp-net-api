@@ -61,7 +61,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
 
     public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null,
-        Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int? pageNumber = null, int? pageSize = null,
         params Expression<Func<T, object>>[] includes)
     {
         IQueryable<T> query = _dbSet;
@@ -73,6 +73,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
                 (current, include) => current.Include(include));
 
         if (orderBy != null) query = orderBy(query);
+
+        if (pageNumber != null && pageSize != null)
+            query = query.Skip(((pageNumber - 1) * pageSize).Value).Take(pageSize.Value);
 
         return await query.AsNoTracking().ToListAsync();
     }

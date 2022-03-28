@@ -8,6 +8,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<IList<T>> GetAll(
         Expression<Func<T, bool>> expression = null,
         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        int? pageNumber = null, int? pageSize = null,
         params Expression<Func<T, object>>[] includes
     );
 
