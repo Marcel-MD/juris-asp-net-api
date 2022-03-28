@@ -1,6 +1,6 @@
 ﻿using Juris.Domain.Entities;
 
-namespace Juris.Api.Services;
+namespace Juris.Api.IServices;
 
 public interface IExperienceService
 {

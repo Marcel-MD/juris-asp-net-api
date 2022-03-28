@@ -1,11 +1,13 @@
 ﻿using System.Linq.Expressions;
 using System.Net;
 using Juris.Api.Exceptions;
+using Juris.Api.IServices;
 using Juris.Api.Parameters;
 using Juris.Data.Repositories;
 using Juris.Domain.Constants;
 using Juris.Domain.Entities;
 using Juris.Domain.Identity;
+using Juris.Resource;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 
@@ -34,11 +36,13 @@ public class ProfileService : IProfileService
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={userId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.UserNotFound, userId));
 
         var existingProfile = await _profileRepository.Get(p => p.UserId == userId);
         if (existingProfile != null)
-            throw new HttpResponseException(HttpStatusCode.BadRequest, $"User with id={userId} already has a profile");
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.UserHasProfile, userId));
 
         var profile = new Profile
         {
@@ -62,11 +66,12 @@ public class ProfileService : IProfileService
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={profileId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.ProfileNotFound, profileId));
 
         if (profile.UserId != userId)
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
-                $"Unauthorized to update profile id={profileId}");
+                string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
         await _profileRepository.Delete(profileId);
         await _unitOfWork.Save();
@@ -76,11 +81,13 @@ public class ProfileService : IProfileService
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={profileId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.ProfileNotFound, profileId));
 
         var user = await _userManager.FindByIdAsync(profile.UserId.ToString());
         if (user == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={profile.UserId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.UserNotFound, profile.UserId));
 
         profile.Status = status;
 
@@ -90,14 +97,14 @@ public class ProfileService : IProfileService
         {
             await _mailService.SendAsync(
                 user.Email,
-                "Profile Status Updated",
-                $"Status of your profile on Juris has changed to <strong>{status}</strong>.");
+                GlobalResource.NewProfileStatusSubject,
+                string.Format(GlobalResource.NewProfileStatusEmail, status));
         }
         catch (Exception e)
         {
             Log.Error(e.Message);
             throw new HttpResponseException(HttpStatusCode.FailedDependency,
-                "Could not send notification email to user");
+                GlobalResource.CantSendEmail);
         }
     }
 
@@ -138,7 +145,7 @@ public class ProfileService : IProfileService
             p => p.City, p => p.ProfileCategory, p => p.Educations, p => p.Experiences, p => p.Reviews);
 
         if (profile == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={id} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound, string.Format(GlobalResource.ProfileNotFound, id));
 
         return profile;
     }
@@ -147,20 +154,23 @@ public class ProfileService : IProfileService
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={userId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.UserNotFound, userId));
 
         var existingProfile = await _profileRepository.Get(p => p.UserId == userId);
         if (existingProfile != null)
-            throw new HttpResponseException(HttpStatusCode.BadRequest, $"User with id={userId} already has a profile");
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.UserHasProfile, userId));
 
         var city = await _cityRepository.GetById(profile.CityId);
         if (city == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"City with id={profile.CityId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.CityNotFound, profile.CityId));
 
         var category = await _categoryRepository.GetById(profile.ProfileCategoryId);
         if (category == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
-                $"Profile Category with id={profile.ProfileCategoryId} not found");
+                string.Format(GlobalResource.ProfileCategoryNotFound, profile.ProfileCategoryId));
 
         profile.UserId = userId;
 
@@ -172,20 +182,22 @@ public class ProfileService : IProfileService
     {
         var existingProfile = await _profileRepository.GetById(profileId);
         if (existingProfile == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"Profile with id={profileId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.ProfileNotFound, profileId));
 
         if (existingProfile.UserId != userId)
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
-                $"Unauthorized to update profile id={profileId}");
+                string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
         var city = await _cityRepository.GetById(profile.CityId);
         if (city == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"City with id={profile.CityId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.CityNotFound, profile.CityId));
 
         var category = await _categoryRepository.GetById(profile.ProfileCategoryId);
         if (category == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
-                $"Profile Category with id={profile.ProfileCategoryId} not found");
+                string.Format(GlobalResource.ProfileCategoryNotFound, profile.ProfileCategoryId));
 
         existingProfile.FirstName = profile.FirstName;
         existingProfile.LastName = profile.LastName;
@@ -210,7 +222,8 @@ public class ProfileService : IProfileService
     {
         var cit = await _cityRepository.Get(c => c.Name == city.Name);
         if (cit != null)
-            throw new HttpResponseException(HttpStatusCode.BadRequest, $"City with name={city.Name} already exists");
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.CityNameExists, city.Name));
 
         await _cityRepository.Insert(city);
         await _unitOfWork.Save();
@@ -226,7 +239,7 @@ public class ProfileService : IProfileService
         var cat = await _categoryRepository.Get(c => c.Category == category.Category);
         if (cat != null)
             throw new HttpResponseException(HttpStatusCode.BadRequest,
-                $"Category with name={category.Category} already exists");
+                string.Format(GlobalResource.CategoryNameExists, category.Category));
 
         await _categoryRepository.Insert(category);
         await _unitOfWork.Save();

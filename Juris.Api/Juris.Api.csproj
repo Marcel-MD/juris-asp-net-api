@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <!--    <Nullable>enable</Nullable>-->
+        <!--<Nullable>enable</Nullable>-->
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Juris.Api</RootNamespace>
     </PropertyGroup>
@@ -27,6 +27,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Juris.Data\Juris.Data.csproj"/>
         <ProjectReference Include="..\Juris.Domain\Juris.Domain.csproj"/>
+        <ProjectReference Include="..\Juris.Resource\Juris.Resource.csproj"/>
     </ItemGroup>
 
 </Project>

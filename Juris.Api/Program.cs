@@ -1,5 +1,6 @@
 using Juris.Api.Configuration;
 using Juris.Api.Exceptions;
+using Juris.Api.IServices;
 using Juris.Api.Services;
 using Juris.Data;
 using Juris.Data.Repositories;

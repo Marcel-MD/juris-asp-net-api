@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Data", "Juris.Data\Ju
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Api", "Juris.Api\Juris.Api.csproj", "{81BF92F2-6F03-4ADD-87C5-266EA6A686C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Resource", "Juris.Resource\Juris.Resource.csproj", "{1FB420C3-C361-4C56-BC8A-7F4A82869296}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{81BF92F2-6F03-4ADD-87C5-266EA6A686C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81BF92F2-6F03-4ADD-87C5-266EA6A686C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81BF92F2-6F03-4ADD-87C5-266EA6A686C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB420C3-C361-4C56-BC8A-7F4A82869296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB420C3-C361-4C56-BC8A-7F4A82869296}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB420C3-C361-4C56-BC8A-7F4A82869296}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB420C3-C361-4C56-BC8A-7F4A82869296}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using Juris.Api.Configuration;
+using Juris.Api.IServices;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -10,11 +11,12 @@ namespace Juris.Api.Services;
 public class MailService : IMailService
 {
     private readonly MailSettings _mailSettings;
+
     public MailService(IOptions<MailSettings> mailSettings)
     {
         _mailSettings = mailSettings.Value;
     }
-    
+
     public async Task SendAsync(string to, string subject, string body)
     {
         if (_mailSettings.Mail == null || _mailSettings.Password == null)

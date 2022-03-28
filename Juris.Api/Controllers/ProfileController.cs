@@ -2,8 +2,8 @@
 using Juris.Api.Dtos.City;
 using Juris.Api.Dtos.Profile;
 using Juris.Api.Dtos.ProfileCategory;
+using Juris.Api.IServices;
 using Juris.Api.Parameters;
-using Juris.Api.Services;
 using Juris.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

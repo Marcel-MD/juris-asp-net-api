@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Juris.Api.Dtos.Review;
-using Juris.Api.Services;
+using Juris.Api.IServices;
 using Juris.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +10,15 @@ namespace Juris.Api.Controllers;
 [Route("api/review")]
 public class ReviewController : BaseController
 {
-    private readonly IReviewService _service;
     private readonly IMapper _mapper;
+    private readonly IReviewService _service;
 
     public ReviewController(IReviewService service, IMapper mapper)
     {
         _service = service;
         _mapper = mapper;
     }
-    
+
     [HttpGet("{profileId}")]
     public async Task<IActionResult> GetReviewByProfileId(long profileId)
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Juris.Api.Dtos.Education;
-using Juris.Api.Services;
+using Juris.Api.IServices;
 using Juris.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +10,15 @@ namespace Juris.Api.Controllers;
 [Route("api/education")]
 public class EducationController : BaseController
 {
-    private readonly IEducationService _service;
     private readonly IMapper _mapper;
+    private readonly IEducationService _service;
 
     public EducationController(IEducationService service, IMapper mapper)
     {
         _service = service;
         _mapper = mapper;
     }
-    
+
     [HttpGet("{profileId}")]
     public async Task<IActionResult> GetEducationByProfileId(long profileId)
     {

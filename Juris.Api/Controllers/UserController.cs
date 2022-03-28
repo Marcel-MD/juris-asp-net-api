@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Juris.Api.Dtos.User;
-using Juris.Api.Services;
+using Juris.Api.IServices;
 using Juris.Domain.Constants;
 using Juris.Domain.Identity;
 using Microsoft.AspNetCore.Identity;

@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using Juris.Api.Exceptions;
+using Juris.Api.IServices;
 using Juris.Data.Repositories;
 using Juris.Domain.Entities;
 using Juris.Domain.Identity;
+using Juris.Resource;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 
@@ -27,7 +29,8 @@ public class AppointmentRequestService : IAppointmentRequestService
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={userId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.UserNotFound, userId));
 
         return await _repository.GetAll(a => a.UserId == userId);
     }
@@ -36,7 +39,8 @@ public class AppointmentRequestService : IAppointmentRequestService
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"User with id={userId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.UserNotFound, userId));
 
         request.UserId = userId;
         await _repository.Insert(request);
@@ -45,14 +49,14 @@ public class AppointmentRequestService : IAppointmentRequestService
         {
             await _mailService.SendAsync(
                 user.Email,
-                "New Appointment Request",
-                $"<strong>{request.FirstName} {request.LastName}</strong> wants to make an appointment with you. Check the details of the request on <strong>Juris</strong>.");
+                GlobalResource.NewRequestSubject,
+                string.Format(GlobalResource.NewRequestEmail, request.FirstName, request.LastName));
         }
         catch (Exception e)
         {
             Log.Error(e.Message);
             throw new HttpResponseException(HttpStatusCode.FailedDependency,
-                "Could not send notification email to user");
+                GlobalResource.CantSendEmail);
         }
     }
 
@@ -60,11 +64,12 @@ public class AppointmentRequestService : IAppointmentRequestService
     {
         var request = await _repository.GetById(requestId);
         if (request == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"Request with id={requestId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.RequestNotFound, requestId));
 
         if (request.UserId != userId)
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
-                $"Unauthorized to delete request id={requestId}");
+                string.Format(GlobalResource.UnauthorizedRequestChange, requestId));
 
         await _repository.Delete(requestId);
         await _unitOfWork.Save();
@@ -74,11 +79,12 @@ public class AppointmentRequestService : IAppointmentRequestService
     {
         var request = await _repository.GetById(requestId);
         if (request == null)
-            throw new HttpResponseException(HttpStatusCode.NotFound, $"Request with id={requestId} not found");
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.RequestNotFound, requestId));
 
         if (request.UserId != userId)
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
-                $"Unauthorized to modify request id={requestId}");
+                string.Format(GlobalResource.UnauthorizedRequestChange, requestId));
 
         request.Status = status;
         _repository.Update(request);

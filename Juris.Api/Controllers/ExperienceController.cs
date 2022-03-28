@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Juris.Api.Dtos.Experience;
-using Juris.Api.Services;
+using Juris.Api.IServices;
 using Juris.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +10,15 @@ namespace Juris.Api.Controllers;
 [Route("api/experience")]
 public class ExperienceController : BaseController
 {
-    private readonly IExperienceService _service;
     private readonly IMapper _mapper;
+    private readonly IExperienceService _service;
 
     public ExperienceController(IExperienceService service, IMapper mapper)
     {
         _service = service;
         _mapper = mapper;
     }
-    
+
     [HttpGet("{profileId}")]
     public async Task<IActionResult> GetExperienceByProfileId(long profileId)
     {

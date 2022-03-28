@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="UserNotFound" xml:space="preserve">
+        <value>User with id={0} not found</value>
+    </data>
+    <data name="UnauthorizedRequestChange" xml:space="preserve">
+        <value>Unauthorized to change request id={0}</value>
+    </data>
+    <data name="RequestNotFound" xml:space="preserve">
+        <value>Request with id={0} not found</value>
+    </data>
+    <data name="NewRequestEmail" xml:space="preserve">
+        <value>&lt;strong&gt;{0} {1}&lt;/strong&gt; wants to make an appointment with you. Check the details of the request on &lt;strong&gt;Juris&lt;/strong&gt;.</value>
+    </data>
+    <data name="CantSendEmail" xml:space="preserve">
+        <value>Could not send notification email to user</value>
+    </data>
+    <data name="ProfileNotFound" xml:space="preserve">
+        <value>Profile with id={0} not found</value>
+    </data>
+    <data name="EducationNotFound" xml:space="preserve">
+        <value>Education with id={0} not found</value>
+    </data>
+    <data name="ExperienceNotFound" xml:space="preserve">
+        <value>Experience with id={id} not found</value>
+    </data>
+    <data name="UnauthorizedProfileChange" xml:space="preserve">
+        <value>Unauthorized to change profile id={0}</value>
+    </data>
+    <data name="UserHasProfile" xml:space="preserve">
+        <value>User with id={0} already has a profile</value>
+    </data>
+    <data name="CityNotFound" xml:space="preserve">
+        <value>City with id={0} not found</value>
+    </data>
+    <data name="ProfileCategoryNotFound" xml:space="preserve">
+        <value>Profile Category with id={0} not found</value>
+    </data>
+    <data name="CityNameExists" xml:space="preserve">
+        <value>City with name={0} already exists</value>
+    </data>
+    <data name="CategoryNameExists" xml:space="preserve">
+        <value>Category with name={0} already exists</value>
+    </data>
+    <data name="NewProfileStatusEmail" xml:space="preserve">
+        <value>Status of your profile on Juris has changed to &lt;strong&gt;{0}&lt;/strong&gt;.</value>
+    </data>
+    <data name="ReviewNotFound" xml:space="preserve">
+        <value>Review with id={0} not found</value>
+    </data>
+    <data name="NewRequestSubject" xml:space="preserve">
+        <value>New Appointment Request</value>
+    </data>
+    <data name="NewProfileStatusSubject" xml:space="preserve">
+        <value>Profile Status Updated</value>
+    </data>
+</root>

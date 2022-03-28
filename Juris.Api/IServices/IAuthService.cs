@@ -1,4 +1,4 @@
-﻿namespace Juris.Api.Services;
+﻿namespace Juris.Api.IServices;
 
 public interface IAuthService
 {
