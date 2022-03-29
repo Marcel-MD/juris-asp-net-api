@@ -6,6 +6,7 @@
 # Custom files
 logs/
 Homeworks/
+appsettings.Production.json
 
 # User-specific files
 *.rsuser
