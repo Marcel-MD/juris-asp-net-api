@@ -229,6 +229,24 @@ public class ProfileService : IProfileService
         await _unitOfWork.Save();
     }
 
+    public async Task DeleteCity(long id)
+    {
+        var city = await _cityRepository.GetById(id);
+        if (city == null)
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.CityNotFound, id));
+
+        try
+        {
+            await _cityRepository.Delete(id);
+            await _unitOfWork.Save();
+        }
+        catch (Exception e)
+        {
+            throw new HttpResponseException(HttpStatusCode.BadRequest, GlobalResource.CantDeleteResource);
+        }
+    }
+
     public async Task<IEnumerable<ProfileCategory>> GetProfileCategories()
     {
         return await _categoryRepository.GetAll();
@@ -243,5 +261,23 @@ public class ProfileService : IProfileService
 
         await _categoryRepository.Insert(category);
         await _unitOfWork.Save();
+    }
+
+    public async Task DeleteProfileCategory(long id)
+    {
+        var cat = await _categoryRepository.GetById(id);
+        if (cat == null)
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.ProfileCategoryNotFound, id));
+
+        try
+        {
+            await _categoryRepository.Delete(id);
+            await _unitOfWork.Save();
+        }
+        catch (Exception e)
+        {
+            throw new HttpResponseException(HttpStatusCode.BadRequest, GlobalResource.CantDeleteResource);
+        }
     }
 }

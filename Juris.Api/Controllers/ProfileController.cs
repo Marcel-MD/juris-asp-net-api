@@ -98,6 +98,14 @@ public class ProfileController : BaseController
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("city/{id}")]
+    public async Task<IActionResult> DeleteCity(long id)
+    {
+        await _service.DeleteCity(id);
+        return Ok();
+    }
+
     [HttpGet("category")]
     public async Task<IActionResult> GetCategories()
     {
@@ -112,6 +120,14 @@ public class ProfileController : BaseController
     {
         var category = _mapper.Map<ProfileCategory>(dto);
         await _service.CreateProfileCategory(category);
+        return Ok();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("category/{id}")]
+    public async Task<IActionResult> DeleteCategory(long id)
+    {
+        await _service.DeleteProfileCategory(id);
         return Ok();
     }
 }

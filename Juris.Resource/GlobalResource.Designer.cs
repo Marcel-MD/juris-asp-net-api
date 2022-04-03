@@ -61,6 +61,15 @@ namespace Juris.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not delete this resource because it&apos;s used.
+        /// </summary>
+        public static string CantDeleteResource {
+            get {
+                return ResourceManager.GetString("CantDeleteResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not send notification email to user.
         /// </summary>
         public static string CantSendEmail {

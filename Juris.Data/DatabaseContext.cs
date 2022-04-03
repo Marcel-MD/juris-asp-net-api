@@ -19,6 +19,12 @@ public class DatabaseContext : IdentityDbContext<User, Role, long, UserClaim, Us
     public DbSet<ProfileCategory> ProfileCategories { get; set; }
     public DbSet<City> Cities { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .UseLazyLoadingProxies();
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

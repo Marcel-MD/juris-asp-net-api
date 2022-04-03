@@ -4,7 +4,7 @@ public class Review : BaseEntity
 {
     public long ProfileId { get; set; }
 
-    public Profile Profile { get; set; }
+    public virtual Profile Profile { get; set; }
 
     public string FirstName { get; set; }
 

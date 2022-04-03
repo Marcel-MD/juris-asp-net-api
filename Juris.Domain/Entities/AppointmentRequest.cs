@@ -6,7 +6,7 @@ public class AppointmentRequest : BaseEntity
 {
     public long UserId { get; set; }
 
-    public User User { get; set; }
+    public virtual User User { get; set; }
 
     public string FirstName { get; set; }
 

@@ -4,7 +4,7 @@ public class Experience : BaseEntity
 {
     public long ProfileId { get; set; }
 
-    public Profile Profile { get; set; }
+    public virtual Profile Profile { get; set; }
 
     public string Company { get; set; }
 

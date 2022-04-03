@@ -13,17 +13,19 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
             .WithOne(u => u.Profile)
             .HasForeignKey<Profile>(p => p.UserId)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(p => p.ProfileCategory)
             .WithMany(c => c.Profiles)
             .HasForeignKey(p => p.ProfileCategoryId)
-            .IsRequired();
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(p => p.City)
             .WithMany(c => c.Profiles)
             .HasForeignKey(p => p.CityId)
-            .IsRequired();
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(p => p.Status)
             .HasMaxLength(50)

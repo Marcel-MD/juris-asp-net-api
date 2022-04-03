@@ -3,6 +3,6 @@
 public class ProfileCategory : BaseEntity
 {
     public string Category { get; set; }
-    
-    public ICollection<Profile> Profiles { get; set; }
+
+    public virtual ICollection<Profile> Profiles { get; set; }
 }
