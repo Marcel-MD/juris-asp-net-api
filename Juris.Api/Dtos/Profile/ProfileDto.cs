@@ -18,6 +18,8 @@ public class ProfileDto
 
     public string Description { get; set; }
 
+    public string ImageName { get; set; }
+
     public string Status { get; set; }
 
     public int Price { get; set; }

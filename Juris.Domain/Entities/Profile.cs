@@ -24,6 +24,8 @@ public class Profile : BaseEntity
 
     public string Address { get; set; }
 
+    public string ImageName { get; set; }
+
     public long CityId { get; set; }
 
     public virtual City City { get; set; }

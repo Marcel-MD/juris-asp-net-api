@@ -11,6 +11,7 @@ public interface IProfileService
     Task CreateEmptyProfile(long userId);
     Task UpdateProfile(Profile profile, long profileId, long userId);
     Task DeleteProfile(long profileId, long userId);
+    Task UpdateProfileImage(IFormFile image, long profileId, long userId);
     Task UpdateProfileStatus(string status, long profileId);
     Task<IEnumerable<City>> GetCities();
     Task CreateCity(City city);

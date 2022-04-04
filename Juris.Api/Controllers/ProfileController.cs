@@ -73,6 +73,14 @@ public class ProfileController : BaseController
         return Ok();
     }
 
+    [Authorize]
+    [HttpPatch("{id}/image")]
+    public async Task<IActionResult> UpdateProfileImage(long id, IFormFile image)
+    {
+        await _service.UpdateProfileImage(image, id, GetCurrentUserId());
+        return Ok();
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpPatch("{id}/status/{status}")]
     public async Task<IActionResult> UpdateProfileStatus(long id, string status)

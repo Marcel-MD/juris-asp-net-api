@@ -15,6 +15,7 @@ namespace Juris.Api.Services;
 
 public class ProfileService : IProfileService
 {
+    private readonly IBlobService _blobService;
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
     private readonly IGenericRepository<City> _cityRepository;
     private readonly IMailService _mailService;
@@ -22,7 +23,8 @@ public class ProfileService : IProfileService
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
 
-    public ProfileService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService)
+    public ProfileService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService,
+        IBlobService blobService)
     {
         _unitOfWork = unitOfWork;
         _profileRepository = unitOfWork.ProfileRepository;
@@ -30,6 +32,7 @@ public class ProfileService : IProfileService
         _categoryRepository = _unitOfWork.ProfileCategoryRepository;
         _userManager = userManager;
         _mailService = mailService;
+        _blobService = blobService;
     }
 
     public async Task CreateEmptyProfile(long userId)
@@ -73,6 +76,7 @@ public class ProfileService : IProfileService
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
+        await _blobService.DeleteBlob(profile.ImageName);
         await _profileRepository.Delete(profileId);
         await _unitOfWork.Save();
     }
@@ -279,5 +283,25 @@ public class ProfileService : IProfileService
         {
             throw new HttpResponseException(HttpStatusCode.BadRequest, GlobalResource.CantDeleteResource);
         }
+    }
+
+    public async Task UpdateProfileImage(IFormFile image, long profileId, long userId)
+    {
+        var profile = await _profileRepository.GetById(profileId);
+        if (profile == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.ProfileNotFound, profileId));
+
+        if (profile.UserId != userId)
+            throw new HttpResponseException(HttpStatusCode.Unauthorized,
+                string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
+
+        if (profile.ImageName != null)
+            await _blobService.DeleteBlob(profile.ImageName);
+
+        profile.ImageName = await _blobService.UploadBlob(image);
+
+        _profileRepository.Update(profile);
+        await _unitOfWork.Save();
     }
 }
