@@ -79,6 +79,15 @@ namespace Juris.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not upload file {0}.
+        /// </summary>
+        public static string CantUpload {
+            get {
+                return ResourceManager.GetString("CantUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Category with name={0} already exists.
         /// </summary>
         public static string CategoryNameExists {
@@ -120,6 +129,24 @@ namespace Juris.Resource {
         public static string ExperienceNotFound {
             get {
                 return ResourceManager.GetString("ExperienceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} not found.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File size should be less than {0}MB.
+        /// </summary>
+        public static string FileSizeLess {
+            get {
+                return ResourceManager.GetString("FileSizeLess", resourceCulture);
             }
         }
         
@@ -210,6 +237,15 @@ namespace Juris.Resource {
         public static string UnauthorizedRequestChange {
             get {
                 return ResourceManager.GetString("UnauthorizedRequestChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported file extension {0}.
+        /// </summary>
+        public static string UnsupportedFileExtension {
+            get {
+                return ResourceManager.GetString("UnsupportedFileExtension", resourceCulture);
             }
         }
         

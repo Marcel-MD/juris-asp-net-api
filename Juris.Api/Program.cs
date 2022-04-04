@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Juris.Api.Configuration;
 using Juris.Api.Exceptions;
 using Juris.Api.IServices;
@@ -13,12 +14,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Database Context
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("docker-mssql"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("mssql"))
 );
 
 // Mail
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddTransient<IMailService, MailService>();
+
+// Blob
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("azurite")));
+builder.Services.AddSingleton<IBlobService, BlobService>();
 
 // Identity
 builder.Services.ConfigureIdentity();
