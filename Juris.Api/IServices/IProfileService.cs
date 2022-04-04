@@ -13,10 +13,4 @@ public interface IProfileService
     Task DeleteProfile(long profileId, long userId);
     Task UpdateProfileImage(IFormFile image, long profileId, long userId);
     Task UpdateProfileStatus(string status, long profileId);
-    Task<IEnumerable<City>> GetCities();
-    Task CreateCity(City city);
-    Task DeleteCity(long id);
-    Task<IEnumerable<ProfileCategory>> GetProfileCategories();
-    Task CreateProfileCategory(ProfileCategory category);
-    Task DeleteProfileCategory(long id);
 }

@@ -39,6 +39,8 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IEducationService, EducationService>();
 builder.Services.AddScoped<IExperienceService, ExperienceService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IProfileCategoryService, ProfileCategoryService>();
 
 // Controllers
 builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); });
