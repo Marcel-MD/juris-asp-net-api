@@ -15,6 +15,8 @@ public class ListProfileDto
 
     public string Description { get; set; }
 
+    public string ImageName { get; set; }
+
     public string Status { get; set; }
 
     public int Price { get; set; }
@@ -24,6 +26,6 @@ public class ListProfileDto
     public string Address { get; set; }
 
     public ProfileCategoryDto ProfileCategory { get; set; }
-    
+
     public CityDto City { get; set; }
 }

@@ -18,14 +18,7 @@ public class AuthService : IAuthService
     {
         _userManager = userManager;
 
-        var section = configuration.GetSection("Jwt");
-        _jwtOptions = new JwtOptions
-        {
-            Issuer = section.GetValue<string>("Issuer"),
-            Audience = section.GetValue<string>("Audience"),
-            Key = section.GetValue<string>("Key"),
-            TokenLifetime = section.GetValue<int>("TokenLifetime")
-        };
+        _jwtOptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
     }
 
     public async Task<bool> ValidateUser(string email, string password)

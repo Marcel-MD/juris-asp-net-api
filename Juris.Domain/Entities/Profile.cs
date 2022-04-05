@@ -6,7 +6,7 @@ public class Profile : BaseEntity
 {
     public long UserId { get; set; }
 
-    public User User { get; set; }
+    public virtual User User { get; set; }
 
     public string FirstName { get; set; }
 
@@ -24,17 +24,19 @@ public class Profile : BaseEntity
 
     public string Address { get; set; }
 
+    public string ImageName { get; set; }
+
     public long CityId { get; set; }
 
-    public City City { get; set; }
+    public virtual City City { get; set; }
 
     public long ProfileCategoryId { get; set; }
 
-    public ProfileCategory ProfileCategory { get; set; }
+    public virtual ProfileCategory ProfileCategory { get; set; }
 
-    public ICollection<Education> Educations { get; set; }
+    public virtual ICollection<Education> Educations { get; set; }
 
-    public ICollection<Experience> Experiences { get; set; }
+    public virtual ICollection<Experience> Experiences { get; set; }
 
-    public ICollection<Review> Reviews { get; set; }
+    public virtual ICollection<Review> Reviews { get; set; }
 }

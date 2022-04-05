@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Juris.Api.Dtos.City;
 using Juris.Api.Dtos.Profile;
-using Juris.Api.Dtos.ProfileCategory;
 using Juris.Api.IServices;
 using Juris.Api.Parameters;
-using Juris.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Profile = Juris.Domain.Entities.Profile;
@@ -73,45 +70,19 @@ public class ProfileController : BaseController
         return Ok();
     }
 
+    [Authorize]
+    [HttpPatch("{id}/image")]
+    public async Task<IActionResult> UpdateProfileImage(long id, IFormFile image)
+    {
+        await _service.UpdateProfileImage(image, id, GetCurrentUserId());
+        return Ok();
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpPatch("{id}/status/{status}")]
     public async Task<IActionResult> UpdateProfileStatus(long id, string status)
     {
         await _service.UpdateProfileStatus(status, id);
-        return Ok();
-    }
-
-    [HttpGet("city")]
-    public async Task<IActionResult> GetCities()
-    {
-        var result = await _service.GetCities();
-        var resultDto = _mapper.Map<IEnumerable<CityDto>>(result);
-        return Ok(resultDto);
-    }
-
-    [Authorize(Roles = "Admin")]
-    [HttpPost("city")]
-    public async Task<IActionResult> CreateCity(CreateCityDto dto)
-    {
-        var city = _mapper.Map<City>(dto);
-        await _service.CreateCity(city);
-        return Ok();
-    }
-
-    [HttpGet("category")]
-    public async Task<IActionResult> GetCategories()
-    {
-        var result = await _service.GetProfileCategories();
-        var resultDto = _mapper.Map<IEnumerable<ProfileCategoryDto>>(result);
-        return Ok(resultDto);
-    }
-
-    [Authorize(Roles = "Admin")]
-    [HttpPost("category")]
-    public async Task<IActionResult> CreateCategory(CreateProfileCategoryDto dto)
-    {
-        var category = _mapper.Map<ProfileCategory>(dto);
-        await _service.CreateProfileCategory(category);
         return Ok();
     }
 }

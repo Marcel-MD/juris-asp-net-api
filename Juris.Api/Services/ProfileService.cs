@@ -15,6 +15,7 @@ namespace Juris.Api.Services;
 
 public class ProfileService : IProfileService
 {
+    private readonly IBlobService _blobService;
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
     private readonly IGenericRepository<City> _cityRepository;
     private readonly IMailService _mailService;
@@ -22,7 +23,8 @@ public class ProfileService : IProfileService
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
 
-    public ProfileService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService)
+    public ProfileService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService,
+        IBlobService blobService)
     {
         _unitOfWork = unitOfWork;
         _profileRepository = unitOfWork.ProfileRepository;
@@ -30,6 +32,7 @@ public class ProfileService : IProfileService
         _categoryRepository = _unitOfWork.ProfileCategoryRepository;
         _userManager = userManager;
         _mailService = mailService;
+        _blobService = blobService;
     }
 
     public async Task CreateEmptyProfile(long userId)
@@ -73,6 +76,7 @@ public class ProfileService : IProfileService
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
+        await _blobService.DeleteBlob(profile.ImageName);
         await _profileRepository.Delete(profileId);
         await _unitOfWork.Save();
     }
@@ -213,35 +217,23 @@ public class ProfileService : IProfileService
         await _unitOfWork.Save();
     }
 
-    public async Task<IEnumerable<City>> GetCities()
+    public async Task UpdateProfileImage(IFormFile image, long profileId, long userId)
     {
-        return await _cityRepository.GetAll();
-    }
+        var profile = await _profileRepository.GetById(profileId);
+        if (profile == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.ProfileNotFound, profileId));
 
-    public async Task CreateCity(City city)
-    {
-        var cit = await _cityRepository.Get(c => c.Name == city.Name);
-        if (cit != null)
-            throw new HttpResponseException(HttpStatusCode.BadRequest,
-                string.Format(GlobalResource.CityNameExists, city.Name));
+        if (profile.UserId != userId)
+            throw new HttpResponseException(HttpStatusCode.Unauthorized,
+                string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
-        await _cityRepository.Insert(city);
-        await _unitOfWork.Save();
-    }
+        if (profile.ImageName != null)
+            await _blobService.DeleteBlob(profile.ImageName);
 
-    public async Task<IEnumerable<ProfileCategory>> GetProfileCategories()
-    {
-        return await _categoryRepository.GetAll();
-    }
+        profile.ImageName = await _blobService.UploadBlob(image);
 
-    public async Task CreateProfileCategory(ProfileCategory category)
-    {
-        var cat = await _categoryRepository.Get(c => c.Category == category.Category);
-        if (cat != null)
-            throw new HttpResponseException(HttpStatusCode.BadRequest,
-                string.Format(GlobalResource.CategoryNameExists, category.Category));
-
-        await _categoryRepository.Insert(category);
+        _profileRepository.Update(profile);
         await _unitOfWork.Save();
     }
 }

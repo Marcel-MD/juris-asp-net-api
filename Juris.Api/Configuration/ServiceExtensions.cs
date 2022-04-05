@@ -24,14 +24,7 @@ public static class ServiceExtensions
 
     public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
-        var section = configuration.GetSection("Jwt");
-        var jwtOptions = new JwtOptions
-        {
-            Issuer = section.GetValue<string>("Issuer"),
-            Audience = section.GetValue<string>("Audience"),
-            Key = section.GetValue<string>("Key"),
-            TokenLifetime = section.GetValue<int>("TokenLifetime")
-        };
+        var jwtOptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
 
         services.AddAuthentication(opt =>
         {
