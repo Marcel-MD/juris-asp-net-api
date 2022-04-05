@@ -16,11 +16,3 @@ Create a new database named `juris` and a new blob container named `juris`. You 
 
 For email notifications feature to work, you'll have to provide the settings in `appsettings.json`.
 
-To start the application in `/Juris.Api` run
-
-```bash
-$ dotnet run
-```
-
-
-
