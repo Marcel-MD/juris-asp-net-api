@@ -20,7 +20,7 @@ public class AppointmentRequestConfiguration : IEntityTypeConfiguration<Appointm
             .HasDefaultValue(AppointmentStatus.OnHold);
 
         builder.Property(a => a.Description)
-            .HasMaxLength(250);
+            .HasMaxLength(500);
 
         builder.Property(a => a.Email)
             .HasMaxLength(50);

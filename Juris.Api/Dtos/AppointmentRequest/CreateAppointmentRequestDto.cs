@@ -26,6 +26,6 @@ public class CreateAppointmentRequestDto
 
     [Required]
     [MinLength(16)]
-    [MaxLength(250)]
+    [MaxLength(500)]
     public string Description { get; set; }
 }

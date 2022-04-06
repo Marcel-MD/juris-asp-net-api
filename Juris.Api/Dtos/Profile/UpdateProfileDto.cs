@@ -21,16 +21,14 @@ public class UpdateProfileDto
 
     [Required]
     [MinLength(16)]
-    [MaxLength(250)]
+    [MaxLength(500)]
     public string Description { get; set; }
 
-    [Required]
-    [Range(0, 900000)]
-    public int Price { get; set; }
+    [Required] [Range(0, 900000)] public int Price { get; set; }
 
     [Required]
     [MinLength(8)]
-    [MaxLength(100)]
+    [MaxLength(150)]
     public string Address { get; set; }
 
     [Required] public long ProfileCategoryId { get; set; }
