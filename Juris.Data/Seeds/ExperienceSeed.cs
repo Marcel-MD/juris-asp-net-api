@@ -41,6 +41,37 @@ public static class ExperienceSeed
                 Company = "MCDonald",
                 Position = "Food Judge",
                 StartDate = new DateTime(2019, 7, 13)
+            },
+            new Experience
+            {
+                ProfileId = 4,
+                Company = "Endava",
+                Position = "Lawyer",
+                StartDate = new DateTime(2019, 7, 13),
+                EndDate = new DateTime(2020, 8, 13)
+            },
+            new Experience
+            {
+                ProfileId = 2,
+                Company = "Amdaris",
+                Position = "Junior Developer",
+                StartDate = new DateTime(2021, 9, 1)
+            },
+            new Experience
+            {
+                ProfileId = 3,
+                Company = "Sigmoid",
+                Position = "ML Engineer",
+                StartDate = new DateTime(2020, 5, 22),
+                EndDate = new DateTime(2021, 10, 7)
+            },
+            new Experience
+            {
+                ProfileId = 5,
+                Company = "Endava",
+                Position = "Lawyer",
+                StartDate = new DateTime(2019, 7, 13),
+                EndDate = new DateTime(2020, 8, 13)
             }
         );
 

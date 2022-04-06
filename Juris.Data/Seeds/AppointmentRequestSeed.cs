@@ -21,7 +21,8 @@ public static class AppointmentRequestSeed
                 FirstName = "MadMary",
                 LastName = "Ungureanu",
                 PhoneNumber = "060989777",
-                Description = "I have some urgent problem. Please help!",
+                Description =
+                    "I have some urgent problem. Please help! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a.",
                 Status = AppointmentStatus.Approved
             },
             new AppointmentRequest
@@ -31,7 +32,8 @@ public static class AppointmentRequestSeed
                 FirstName = "Valeria",
                 LastName = "Something",
                 PhoneNumber = "060989123",
-                Description = "I need your consultation right now!"
+                Description =
+                    "I need your consultation right now! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a."
             },
             new AppointmentRequest
             {
@@ -40,7 +42,8 @@ public static class AppointmentRequestSeed
                 FirstName = "Marcel",
                 LastName = "Vlasenco",
                 PhoneNumber = "060989713",
-                Description = "You did a great job last time, I want to hire you again."
+                Description =
+                    "You did a great job last time, I want to hire you again. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a."
             },
             new AppointmentRequest
             {
@@ -49,8 +52,71 @@ public static class AppointmentRequestSeed
                 FirstName = "Stefan",
                 LastName = "Boicu",
                 PhoneNumber = "060989654",
-                Description = "What are you doing tonight?",
+                Description =
+                    "What are you doing tonight? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a.",
                 Status = AppointmentStatus.Declined
+            },
+            new AppointmentRequest
+            {
+                UserId = 5,
+                Email = "mada@mailinator.com",
+                FirstName = "MadMary",
+                LastName = "Ungureanu",
+                PhoneNumber = "060989777",
+                Description =
+                    "I have some urgent problem. Please help! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a.",
+                Status = AppointmentStatus.Approved
+            },
+            new AppointmentRequest
+            {
+                UserId = 6,
+                Email = "valeria@mailinator.com",
+                FirstName = "Valeria",
+                LastName = "Something",
+                PhoneNumber = "060989123",
+                Description =
+                    "I need your consultation right now! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a."
+            },
+            new AppointmentRequest
+            {
+                UserId = 6,
+                Email = "marcel@mailinator.com",
+                FirstName = "Marcel",
+                LastName = "Vlasenco",
+                PhoneNumber = "060989713",
+                Description =
+                    "You did a great job last time, I want to hire you again. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a."
+            },
+            new AppointmentRequest
+            {
+                UserId = 3,
+                Email = "mada@mailinator.com",
+                FirstName = "MadMary",
+                LastName = "Ungureanu",
+                PhoneNumber = "060989777",
+                Description =
+                    "I have some urgent problem. Please help! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a.",
+                Status = AppointmentStatus.Approved
+            },
+            new AppointmentRequest
+            {
+                UserId = 2,
+                Email = "valeria@mailinator.com",
+                FirstName = "Valeria",
+                LastName = "Something",
+                PhoneNumber = "060989123",
+                Description =
+                    "I need your consultation right now! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a."
+            },
+            new AppointmentRequest
+            {
+                UserId = 3,
+                Email = "marcel@mailinator.com",
+                FirstName = "Marcel",
+                LastName = "Vlasenco",
+                PhoneNumber = "060989713",
+                Description =
+                    "You did a great job last time, I want to hire you again. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu risus quis varius quam. Congue nisi vitae suscipit tellus mauris a."
             }
         );
 
