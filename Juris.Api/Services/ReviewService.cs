@@ -25,7 +25,7 @@ public class ReviewService : IReviewService
         return await _reviewRepository.GetAll(e => e.ProfileId == profileId);
     }
 
-    public async Task CreateReview(Review review, long profileId)
+    public async Task<Review> CreateReview(Review review, long profileId)
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
@@ -36,6 +36,7 @@ public class ReviewService : IReviewService
         await _reviewRepository.Insert(review);
         await _unitOfWord.Save();
         await UpdateProfileRating(profileId);
+        return review;
     }
 
     public async Task DeleteReview(long id)

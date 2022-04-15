@@ -32,8 +32,9 @@ public class EducationController : BaseController
     public async Task<IActionResult> CreateEducation(long profileId, CreateEducationDto dto)
     {
         var education = _mapper.Map<Education>(dto);
-        await _service.CreateEducation(education, profileId, GetCurrentUserId());
-        return Ok();
+        education = await _service.CreateEducation(education, profileId, GetCurrentUserId());
+        var educationDto = _mapper.Map<EducationDto>(education);
+        return Ok(educationDto);
     }
 
     [Authorize]
@@ -41,6 +42,6 @@ public class EducationController : BaseController
     public async Task<IActionResult> DeleteEducation(long id)
     {
         await _service.DeleteEducation(id, GetCurrentUserId());
-        return Ok();
+        return NoContent();
     }
 }

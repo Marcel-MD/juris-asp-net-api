@@ -5,6 +5,6 @@ namespace Juris.Api.IServices;
 public interface IProfileCategoryService
 {
     Task<IEnumerable<ProfileCategory>> GetProfileCategories();
-    Task CreateProfileCategory(ProfileCategory category);
+    Task<ProfileCategory> CreateProfileCategory(ProfileCategory category);
     Task DeleteProfileCategory(long id);
 }

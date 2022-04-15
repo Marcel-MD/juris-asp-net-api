@@ -25,7 +25,7 @@ public class ExperienceService : IExperienceService
         return await _experienceRepository.GetAll(e => e.ProfileId == profileId);
     }
 
-    public async Task CreateExperience(Experience experience, long profileId, long userId)
+    public async Task<Experience> CreateExperience(Experience experience, long profileId, long userId)
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
@@ -39,6 +39,7 @@ public class ExperienceService : IExperienceService
         experience.ProfileId = profileId;
         await _experienceRepository.Insert(experience);
         await _unitOfWord.Save();
+        return experience;
     }
 
     public async Task DeleteExperience(long id, long userId)

@@ -31,8 +31,9 @@ public class ReviewController : BaseController
     public async Task<IActionResult> CreateReview(long profileId, CreateReviewDto dto)
     {
         var review = _mapper.Map<Review>(dto);
-        await _service.CreateReview(review, profileId);
-        return Ok();
+        review = await _service.CreateReview(review, profileId);
+        var reviewDto = _mapper.Map<ReviewDto>(review);
+        return Ok(reviewDto);
     }
 
     [Authorize(Roles = "Admin")]
@@ -40,6 +41,6 @@ public class ReviewController : BaseController
     public async Task<IActionResult> DeleteReview(long id)
     {
         await _service.DeleteReview(id);
-        return Ok();
+        return NoContent();
     }
 }

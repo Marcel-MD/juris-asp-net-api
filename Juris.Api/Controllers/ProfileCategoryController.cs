@@ -18,7 +18,7 @@ public class ProfileCategoryController : BaseController
         _service = service;
         _mapper = mapper;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetCategories()
     {
@@ -32,8 +32,9 @@ public class ProfileCategoryController : BaseController
     public async Task<IActionResult> CreateCategory(CreateProfileCategoryDto dto)
     {
         var category = _mapper.Map<ProfileCategory>(dto);
-        await _service.CreateProfileCategory(category);
-        return Ok();
+        category = await _service.CreateProfileCategory(category);
+        var categoryDto = _mapper.Map<ProfileCategoryDto>(category);
+        return Ok(categoryDto);
     }
 
     [Authorize(Roles = "Admin")]
@@ -41,6 +42,6 @@ public class ProfileCategoryController : BaseController
     public async Task<IActionResult> DeleteCategory(long id)
     {
         await _service.DeleteProfileCategory(id);
-        return Ok();
+        return NoContent();
     }
 }

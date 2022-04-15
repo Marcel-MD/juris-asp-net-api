@@ -18,7 +18,7 @@ public class CityController : BaseController
         _service = service;
         _mapper = mapper;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetCities()
     {
@@ -32,8 +32,9 @@ public class CityController : BaseController
     public async Task<IActionResult> CreateCity(CreateCityDto dto)
     {
         var city = _mapper.Map<City>(dto);
-        await _service.CreateCity(city);
-        return Ok();
+        city = await _service.CreateCity(city);
+        var cityDto = _mapper.Map<CityDto>(city);
+        return Ok(cityDto);
     }
 
     [Authorize(Roles = "Admin")]
@@ -41,6 +42,6 @@ public class CityController : BaseController
     public async Task<IActionResult> DeleteCity(long id)
     {
         await _service.DeleteCity(id);
-        return Ok();
+        return NoContent();
     }
 }

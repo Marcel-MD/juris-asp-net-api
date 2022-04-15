@@ -25,7 +25,7 @@ public class EducationService : IEducationService
         return await _educationRepository.GetAll(e => e.ProfileId == profileId);
     }
 
-    public async Task CreateEducation(Education education, long profileId, long userId)
+    public async Task<Education> CreateEducation(Education education, long profileId, long userId)
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
@@ -39,6 +39,7 @@ public class EducationService : IEducationService
         education.ProfileId = profileId;
         await _educationRepository.Insert(education);
         await _unitOfWord.Save();
+        return education;
     }
 
     public async Task DeleteEducation(long id, long userId)

@@ -35,7 +35,7 @@ public class ProfileService : IProfileService
         _blobService = blobService;
     }
 
-    public async Task CreateEmptyProfile(long userId)
+    public async Task<Profile> CreateEmptyProfile(long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
@@ -63,6 +63,7 @@ public class ProfileService : IProfileService
 
         await _profileRepository.Insert(profile);
         await _unitOfWork.Save();
+        return profile;
     }
 
     public async Task DeleteProfile(long profileId, long userId)
@@ -76,7 +77,9 @@ public class ProfileService : IProfileService
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
-        await _blobService.DeleteBlob(profile.ImageName);
+        if (profile.ImageName != null)
+            await _blobService.DeleteBlob(profile.ImageName);
+
         await _profileRepository.Delete(profileId);
         await _unitOfWork.Save();
     }
@@ -154,7 +157,7 @@ public class ProfileService : IProfileService
         return profile;
     }
 
-    public async Task CreateProfile(Profile profile, long userId)
+    public async Task<Profile> CreateProfile(Profile profile, long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
@@ -180,9 +183,10 @@ public class ProfileService : IProfileService
 
         await _profileRepository.Insert(profile);
         await _unitOfWork.Save();
+        return profile;
     }
 
-    public async Task UpdateProfile(Profile profile, long profileId, long userId)
+    public async Task<Profile> UpdateProfile(Profile profile, long profileId, long userId)
     {
         var existingProfile = await _profileRepository.GetById(profileId);
         if (existingProfile == null)
@@ -215,6 +219,7 @@ public class ProfileService : IProfileService
 
         _profileRepository.Update(existingProfile);
         await _unitOfWork.Save();
+        return existingProfile;
     }
 
     public async Task UpdateProfileImage(IFormFile image, long profileId, long userId)

@@ -41,16 +41,18 @@ public class ProfileController : BaseController
     public async Task<IActionResult> CreateProfile(UpdateProfileDto dto)
     {
         var profile = _mapper.Map<Profile>(dto);
-        await _service.CreateProfile(profile, GetCurrentUserId());
-        return Ok();
+        profile = await _service.CreateProfile(profile, GetCurrentUserId());
+        var profileDto = _mapper.Map<ListProfileDto>(profile);
+        return Ok(profileDto);
     }
 
     [Authorize]
     [HttpPost("empty")]
     public async Task<IActionResult> CreateEmptyProfile()
     {
-        await _service.CreateEmptyProfile(GetCurrentUserId());
-        return Ok();
+        var profile = await _service.CreateEmptyProfile(GetCurrentUserId());
+        var profileDto = _mapper.Map<ListProfileDto>(profile);
+        return Ok(profileDto);
     }
 
     [Authorize]
@@ -58,8 +60,9 @@ public class ProfileController : BaseController
     public async Task<IActionResult> UpdateProfile(long id, UpdateProfileDto dto)
     {
         var profile = _mapper.Map<Profile>(dto);
-        await _service.UpdateProfile(profile, id, GetCurrentUserId());
-        return Ok();
+        profile = await _service.UpdateProfile(profile, id, GetCurrentUserId());
+        var profileDto = _mapper.Map<ListProfileDto>(profile);
+        return Ok(profileDto);
     }
 
     [Authorize]
@@ -67,7 +70,7 @@ public class ProfileController : BaseController
     public async Task<IActionResult> DeleteProfile(long id)
     {
         await _service.DeleteProfile(id, GetCurrentUserId());
-        return Ok();
+        return NoContent();
     }
 
     [Authorize]
@@ -75,7 +78,7 @@ public class ProfileController : BaseController
     public async Task<IActionResult> UpdateProfileImage(long id, IFormFile image)
     {
         await _service.UpdateProfileImage(image, id, GetCurrentUserId());
-        return Ok();
+        return NoContent();
     }
 
     [Authorize(Roles = "Admin")]
@@ -83,6 +86,6 @@ public class ProfileController : BaseController
     public async Task<IActionResult> UpdateProfileStatus(long id, string status)
     {
         await _service.UpdateProfileStatus(status, id);
-        return Ok();
+        return NoContent();
     }
 }

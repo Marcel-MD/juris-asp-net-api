@@ -9,21 +9,21 @@ namespace Juris.Api.Services;
 
 public class CityService : ICityService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<City> _cityRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CityService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
         _cityRepository = _unitOfWork.CityRepository;
     }
-    
+
     public async Task<IEnumerable<City>> GetCities()
     {
         return await _cityRepository.GetAll();
     }
 
-    public async Task CreateCity(City city)
+    public async Task<City> CreateCity(City city)
     {
         var cit = await _cityRepository.Get(c => c.Name == city.Name);
         if (cit != null)
@@ -32,6 +32,8 @@ public class CityService : ICityService
 
         await _cityRepository.Insert(city);
         await _unitOfWork.Save();
+
+        return city;
     }
 
     public async Task DeleteCity(long id)

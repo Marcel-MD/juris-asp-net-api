@@ -34,8 +34,9 @@ public class AppointmentRequestController : BaseController
     public async Task<IActionResult> CreateAppointmentRequest(long userId, CreateAppointmentRequestDto dto)
     {
         var appointmentRequest = _mapper.Map<AppointmentRequest>(dto);
-        await _service.CreateRequest(appointmentRequest, userId);
-        return Ok();
+        appointmentRequest = await _service.CreateRequest(appointmentRequest, userId);
+        var appointmentDto = _mapper.Map<AppointmentRequestDto>(appointmentRequest);
+        return Ok(appointmentDto);
     }
 
     [Authorize]
@@ -43,7 +44,7 @@ public class AppointmentRequestController : BaseController
     public async Task<IActionResult> DeleteAppointmentRequest(long id)
     {
         await _service.DeleteRequest(id, GetCurrentUserId());
-        return Ok();
+        return NoContent();
     }
 
     [Authorize]
@@ -51,6 +52,6 @@ public class AppointmentRequestController : BaseController
     public async Task<IActionResult> UpdateAppointmentRequestStatus(long id, string status)
     {
         await _service.UpdateRequestStatus(status, id, GetCurrentUserId());
-        return Ok();
+        return NoContent();
     }
 }

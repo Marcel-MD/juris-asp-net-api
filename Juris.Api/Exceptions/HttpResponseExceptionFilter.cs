@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Juris.Api.Exceptions;
 
-public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
+public class HttpResponseExceptionFilter : IExceptionFilter
 {
-    public void OnActionExecuting(ActionExecutingContext context)
+    public void OnException(ExceptionContext context)
     {
-    }
+        if (context.ExceptionHandled) return;
 
-    public void OnActionExecuted(ActionExecutedContext context)
-    {
         if (context.Exception is HttpResponseException httpResponseException)
         {
             var responseBody = new
@@ -26,6 +24,4 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
             context.ExceptionHandled = true;
         }
     }
-
-    public int Order => int.MaxValue - 10;
 }
