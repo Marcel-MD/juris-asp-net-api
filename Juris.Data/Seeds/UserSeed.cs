@@ -39,6 +39,11 @@ public static class UserSeed
             {
                 UserName = "stephy@mailinator.com",
                 Email = "stephy@mailinator.com"
+            },
+            new()
+            {
+                UserName = "mocanu@mailinator.com",
+                Email = "mocanu@mailinator.com"
             }
         };
 

@@ -35,7 +35,7 @@ public class AppointmentRequestService : IAppointmentRequestService
         return await _repository.GetAll(a => a.UserId == userId);
     }
 
-    public async Task CreateRequest(AppointmentRequest request, long userId)
+    public async Task<AppointmentRequest> CreateRequest(AppointmentRequest request, long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
@@ -58,6 +58,8 @@ public class AppointmentRequestService : IAppointmentRequestService
             throw new HttpResponseException(HttpStatusCode.FailedDependency,
                 GlobalResource.CantSendEmail);
         }
+
+        return request;
     }
 
     public async Task DeleteRequest(long requestId, long userId)

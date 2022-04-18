@@ -32,8 +32,9 @@ public class ExperienceController : BaseController
     public async Task<IActionResult> CreateExperience(long profileId, CreateExperienceDto dto)
     {
         var experience = _mapper.Map<Experience>(dto);
-        await _service.CreateExperience(experience, profileId, GetCurrentUserId());
-        return Ok();
+        experience = await _service.CreateExperience(experience, profileId, GetCurrentUserId());
+        var experienceDto = _mapper.Map<ExperienceDto>(experience);
+        return Ok(experienceDto);
     }
 
     [Authorize]
@@ -41,6 +42,6 @@ public class ExperienceController : BaseController
     public async Task<IActionResult> DeleteExperience(long id)
     {
         await _service.DeleteExperience(id, GetCurrentUserId());
-        return Ok();
+        return NoContent();
     }
 }

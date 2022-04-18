@@ -9,21 +9,21 @@ namespace Juris.Api.Services;
 
 public class ProfileCategoryService : IProfileCategoryService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ProfileCategoryService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
         _categoryRepository = _unitOfWork.ProfileCategoryRepository;
     }
-    
+
     public async Task<IEnumerable<ProfileCategory>> GetProfileCategories()
     {
         return await _categoryRepository.GetAll();
     }
 
-    public async Task CreateProfileCategory(ProfileCategory category)
+    public async Task<ProfileCategory> CreateProfileCategory(ProfileCategory category)
     {
         var cat = await _categoryRepository.Get(c => c.Category == category.Category);
         if (cat != null)
@@ -32,6 +32,7 @@ public class ProfileCategoryService : IProfileCategoryService
 
         await _categoryRepository.Insert(category);
         await _unitOfWork.Save();
+        return category;
     }
 
     public async Task DeleteProfileCategory(long id)

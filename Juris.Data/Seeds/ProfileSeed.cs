@@ -20,7 +20,8 @@ public static class ProfileSeed
                 FirstName = "Viorel",
                 LastName = "Noroc",
                 PhoneNumber = "060989543",
-                Description = "I am a great lawyer, look at me!",
+                Description =
+                    "I am a great lawyer, look at me! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate. Sit amet massa vitae tortor. Enim nec dui nunc mattis. Mattis molestie a iaculis at erat pellentesque.",
                 ProfileCategoryId = 1,
                 Status = ProfileStatus.Approved,
                 Price = 800,
@@ -34,7 +35,8 @@ public static class ProfileSeed
                 FirstName = "Nicu",
                 LastName = "Savva",
                 PhoneNumber = "060989678",
-                Description = "I can play drums, better than any lawyer out there!",
+                Description =
+                    "I can play drums, better than any lawyer out there! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate. Sit amet massa vitae tortor. Enim nec dui nunc mattis. Mattis molestie a iaculis at erat pellentesque.",
                 ProfileCategoryId = 1,
                 Price = 500,
                 Rating = 7,
@@ -47,7 +49,8 @@ public static class ProfileSeed
                 FirstName = "Irina",
                 LastName = "Tiora",
                 PhoneNumber = "060989974",
-                Description = "I am a great at judging food!",
+                Description =
+                    "I am a great at judging food! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate. Sit amet massa vitae tortor. Enim nec dui nunc mattis. Mattis molestie a iaculis at erat pellentesque.",
                 ProfileCategoryId = 3,
                 Status = ProfileStatus.Approved,
                 Price = 780,
@@ -61,12 +64,28 @@ public static class ProfileSeed
                 FirstName = "Stephania",
                 LastName = "Matvei",
                 PhoneNumber = "060986754",
-                Description = "I am the best notary in the town!",
+                Description =
+                    "I am the best notary in the town! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate. Sit amet massa vitae tortor. Enim nec dui nunc mattis. Mattis molestie a iaculis at erat pellentesque.",
                 ProfileCategoryId = 2,
                 Status = ProfileStatus.Approved,
                 Price = 600,
                 Rating = 7.9,
                 CityId = 2,
+                Address = "Stefan cel Mare str."
+            },
+            new Profile
+            {
+                UserId = 6,
+                FirstName = "Liviu",
+                LastName = "Mocanu",
+                PhoneNumber = "060981234",
+                Description =
+                    "I am good ad judging games, and movies! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate. Sit amet massa vitae tortor. Enim nec dui nunc mattis. Mattis molestie a iaculis at erat pellentesque.",
+                ProfileCategoryId = 3,
+                Status = ProfileStatus.Approved,
+                Price = 750,
+                Rating = 9,
+                CityId = 1,
                 Address = "Stefan cel Mare str."
             }
         );

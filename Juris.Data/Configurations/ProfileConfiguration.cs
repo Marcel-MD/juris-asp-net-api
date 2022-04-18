@@ -32,7 +32,7 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
             .HasDefaultValue(ProfileStatus.Unapproved);
 
         builder.Property(p => p.Description)
-            .HasMaxLength(250);
+            .HasMaxLength(500);
 
         builder.Property(p => p.FirstName)
             .HasMaxLength(50);
@@ -47,6 +47,9 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
             .HasMaxLength(50);
 
         builder.Property(p => p.Address)
-            .HasMaxLength(100);
+            .HasMaxLength(150);
+
+        builder.Property(p => p.ImageName)
+            .HasMaxLength(250);
     }
 }

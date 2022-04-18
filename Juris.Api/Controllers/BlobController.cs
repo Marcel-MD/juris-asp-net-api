@@ -1,9 +1,9 @@
 ﻿using Juris.Api.IServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MimeTypes;
 
 namespace Juris.Api.Controllers;
-using Microsoft.AspNetCore.Mvc;
 
 [Route("api/blob")]
 public class BlobController : BaseController
@@ -21,7 +21,7 @@ public class BlobController : BaseController
         var result = await _service.GetBlobNames();
         return Ok(result);
     }
-    
+
     [HttpGet("{name}")]
     public async Task<IActionResult> GetBlobUri(string name)
     {
@@ -35,7 +35,7 @@ public class BlobController : BaseController
     public async Task<IActionResult> DeleteBlob(string name)
     {
         await _service.DeleteBlob(name);
-        return Ok();
+        return NoContent();
     }
 
     [Authorize(Roles = "Admin")]

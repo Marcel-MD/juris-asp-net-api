@@ -37,7 +37,9 @@ public class UserController : ControllerBase
 
         if (await _roleManager.RoleExistsAsync(RoleType.User)) await _userManager.AddToRoleAsync(user, RoleType.User);
 
-        return Ok();
+        user = await _userManager.FindByEmailAsync(dto.Email);
+        var userDto = _mapper.Map<UserDto>(user);
+        return Ok(userDto);
     }
 
     [HttpPost("login")]
