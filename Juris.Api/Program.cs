@@ -102,3 +102,7 @@ await DatabaseSeeder.Seed(app);
 
 
 app.Run();
+
+public partial class Program
+{
+}

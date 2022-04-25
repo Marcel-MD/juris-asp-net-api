@@ -20,7 +20,7 @@ public class ReviewController : BaseController
     }
 
     [HttpGet("{profileId}")]
-    public async Task<IActionResult> GetReviewByProfileId(long profileId)
+    public async Task<IActionResult> GetReviewsByProfileId(long profileId)
     {
         var result = await _service.GetAllReviews(profileId);
         var resultDto = _mapper.Map<IEnumerable<ReviewDto>>(result);
