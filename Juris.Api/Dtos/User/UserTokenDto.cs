@@ -9,4 +9,6 @@ public class UserTokenDto
     public List<string> Roles { get; set; }
 
     public string Token { get; set; }
+    
+    public long ProfileId { get; set; }
 }

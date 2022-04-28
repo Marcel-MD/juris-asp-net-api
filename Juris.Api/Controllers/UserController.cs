@@ -52,6 +52,8 @@ public class UserController : ControllerBase
         var userTokenDto = _mapper.Map<UserTokenDto>(user);
         userTokenDto.Roles = roles.ToList();
         userTokenDto.Token = await _authService.CreateToken();
+        if (user.Profile != null)
+            userTokenDto.ProfileId = user.Profile.Id;
 
         return Ok(userTokenDto);
     }
