@@ -72,8 +72,15 @@ public class ProfileService : IProfileService
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
                 string.Format(GlobalResource.ProfileNotFound, profileId));
+        
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (user == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.UserNotFound, userId));
+        
+        var roles = await _userManager.GetRolesAsync(user);
 
-        if (profile.UserId != userId)
+        if (profile.UserId != userId && !roles.Contains(RoleType.Admin))
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 

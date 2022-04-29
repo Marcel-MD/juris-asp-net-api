@@ -3,6 +3,7 @@ using Juris.Api.Dtos.User;
 using Juris.Api.IServices;
 using Juris.Domain.Constants;
 using Juris.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,5 +57,14 @@ public class UserController : ControllerBase
             userTokenDto.ProfileId = user.Profile.Id;
 
         return Ok(userTokenDto);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<IActionResult> GetUsers()
+    {
+        var users = _userManager.Users;
+        var dto = _mapper.Map<IEnumerable<UserDto>>(users);
+        return Ok(dto);
     }
 }
