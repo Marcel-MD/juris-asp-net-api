@@ -19,5 +19,7 @@ public class EducationConfiguration : IEntityTypeConfiguration<Education>
 
         builder.Property(e => e.Speciality)
             .HasMaxLength(50);
+
+        builder.Property(e => e.EndDate).IsRequired(false);
     }
 }

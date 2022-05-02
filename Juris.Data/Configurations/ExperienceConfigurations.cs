@@ -19,5 +19,7 @@ public class ExperienceConfigurations : IEntityTypeConfiguration<Experience>
 
         builder.Property(e => e.Position)
             .HasMaxLength(50);
+        
+        builder.Property(e => e.EndDate).IsRequired(false);
     }
 }
