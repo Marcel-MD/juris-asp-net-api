@@ -77,8 +77,8 @@ public class ProfileController : BaseController
     [HttpPatch("{id}/image")]
     public async Task<IActionResult> UpdateProfileImage(long id, IFormFile image)
     {
-        await _service.UpdateProfileImage(image, id, GetCurrentUserId());
-        return NoContent();
+        var response = await _service.UpdateProfileImage(image, id, GetCurrentUserId());
+        return Ok(response);
     }
 
     [Authorize(Roles = "Admin")]

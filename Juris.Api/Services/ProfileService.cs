@@ -229,7 +229,7 @@ public class ProfileService : IProfileService
         return existingProfile;
     }
 
-    public async Task UpdateProfileImage(IFormFile image, long profileId, long userId)
+    public async Task<string> UpdateProfileImage(IFormFile image, long profileId, long userId)
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
@@ -247,5 +247,6 @@ public class ProfileService : IProfileService
 
         _profileRepository.Update(profile);
         await _unitOfWork.Save();
+        return profile.ImageName;
     }
 }

@@ -11,6 +11,6 @@ public interface IProfileService
     Task<Profile> CreateEmptyProfile(long userId);
     Task<Profile> UpdateProfile(Profile profile, long profileId, long userId);
     Task DeleteProfile(long profileId, long userId);
-    Task UpdateProfileImage(IFormFile image, long profileId, long userId);
+    Task<string> UpdateProfileImage(IFormFile image, long profileId, long userId);
     Task UpdateProfileStatus(string status, long profileId);
 }
