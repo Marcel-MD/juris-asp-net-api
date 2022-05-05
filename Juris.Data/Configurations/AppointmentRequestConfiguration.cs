@@ -38,6 +38,6 @@ public class AppointmentRequestConfiguration : IEntityTypeConfiguration<Appointm
             .HasMaxLength(50);
 
         builder.Property(a => a.CreationDate)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("GETUTCDATE()");
     }
 }
