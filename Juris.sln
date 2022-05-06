@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Domain", "Juris.Domain\Juris.Domain.csproj", "{571F696A-FB37-42A0-954B-3F9C415D9A96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Data", "Juris.Data\Juris.Data.csproj", "{17C7B2FF-7399-4936-8E4F-7AF3F98E0D54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Dal", "Juris.Dal\Juris.Dal.csproj", "{17C7B2FF-7399-4936-8E4F-7AF3F98E0D54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Api", "Juris.Api\Juris.Api.csproj", "{81BF92F2-6F03-4ADD-87C5-266EA6A686C3}"
 EndProject

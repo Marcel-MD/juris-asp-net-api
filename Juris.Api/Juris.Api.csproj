@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Juris.Data\Juris.Data.csproj" />
+        <ProjectReference Include="..\Juris.Dal\Juris.Dal.csproj" />
         <ProjectReference Include="..\Juris.Domain\Juris.Domain.csproj" />
         <ProjectReference Include="..\Juris.Resource\Juris.Resource.csproj" />
     </ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Juris.Data;
+﻿using Juris.Dal;
 using Juris.Domain.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

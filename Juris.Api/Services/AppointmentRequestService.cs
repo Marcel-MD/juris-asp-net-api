@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Juris.Api.Exceptions;
 using Juris.Api.IServices;
-using Juris.Data.Repositories;
+using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Domain.Identity;
 using Juris.Resource;
