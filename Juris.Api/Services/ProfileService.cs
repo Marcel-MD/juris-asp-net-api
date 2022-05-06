@@ -72,8 +72,15 @@ public class ProfileService : IProfileService
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
                 string.Format(GlobalResource.ProfileNotFound, profileId));
+        
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (user == null)
+            throw new HttpResponseException(HttpStatusCode.NotFound,
+                string.Format(GlobalResource.UserNotFound, userId));
+        
+        var roles = await _userManager.GetRolesAsync(user);
 
-        if (profile.UserId != userId)
+        if (profile.UserId != userId && !roles.Contains(RoleType.Admin))
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
@@ -222,7 +229,7 @@ public class ProfileService : IProfileService
         return existingProfile;
     }
 
-    public async Task UpdateProfileImage(IFormFile image, long profileId, long userId)
+    public async Task<string> UpdateProfileImage(IFormFile image, long profileId, long userId)
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
@@ -240,5 +247,6 @@ public class ProfileService : IProfileService
 
         _profileRepository.Update(profile);
         await _unitOfWork.Save();
+        return profile.ImageName;
     }
 }

@@ -33,6 +33,6 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
             .HasMaxLength(50);
 
         builder.Property(r => r.CreationDate)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("GETUTCDATE()");
     }
 }
