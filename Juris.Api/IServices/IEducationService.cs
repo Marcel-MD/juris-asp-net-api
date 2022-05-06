@@ -1,10 +1,10 @@
-﻿using Juris.Domain.Entities;
+﻿using Juris.Common.Dtos.Education;
 
 namespace Juris.Api.IServices;
 
 public interface IEducationService
 {
-    Task<IEnumerable<Education>> GetAllEducation(long profileId);
-    Task<Education> CreateEducation(Education education, long profileId, long userId);
+    Task<IEnumerable<EducationDto>> GetAllEducation(long profileId);
+    Task<EducationDto> CreateEducation(CreateEducationDto education, long profileId, long userId);
     Task DeleteEducation(long id, long userId);
 }

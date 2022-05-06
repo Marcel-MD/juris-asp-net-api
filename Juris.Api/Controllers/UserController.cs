@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using Juris.Common.Dtos.User;
+﻿using Juris.Common.Dtos.User;
 using Juris.Api.IServices;
-using Juris.Domain.Constants;
-using Juris.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juris.Api.Controllers;
@@ -13,58 +9,32 @@ namespace Juris.Api.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IAuthService _authService;
-    private readonly IMapper _mapper;
-    private readonly RoleManager<Role> _roleManager;
-    private readonly UserManager<User> _userManager;
+    private readonly IUserService _service;
 
-    public UserController(UserManager<User> userManager, RoleManager<Role> roleManager,
-        IAuthService authService, IMapper mapper)
+    public UserController(IUserService service)
     {
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _authService = authService;
-        _mapper = mapper;
+        this._service = service;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(CreateUserDto dto)
     {
-        var user = _mapper.Map<User>(dto);
-        user.UserName = user.Email;
-        var result = await _userManager.CreateAsync(user, dto.Password);
-
-        if (!result.Succeeded) return BadRequest(new {errors = result.Errors.Select(e => e.Description)});
-
-        if (await _roleManager.RoleExistsAsync(RoleType.User)) await _userManager.AddToRoleAsync(user, RoleType.User);
-
-        user = await _userManager.FindByEmailAsync(dto.Email);
-        var userDto = _mapper.Map<UserDto>(user);
-        return Ok(userDto);
+        var result = await _service.RegisterUser(dto);
+        return Ok(result);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(CreateUserDto dto)
     {
-        if (!await _authService.ValidateUser(dto.Email, dto.Password)) return Unauthorized();
-
-        var user = await _userManager.FindByEmailAsync(dto.Email);
-        var roles = await _userManager.GetRolesAsync(user);
-        var userTokenDto = _mapper.Map<UserTokenDto>(user);
-        userTokenDto.Roles = roles.ToList();
-        userTokenDto.Token = await _authService.CreateToken();
-        if (user.Profile != null)
-            userTokenDto.ProfileId = user.Profile.Id;
-
-        return Ok(userTokenDto);
+        var result = await _service.LoginUser(dto);
+        return Ok(result);
     }
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> GetUsers()
     {
-        var users = _userManager.Users;
-        var dto = _mapper.Map<IEnumerable<UserDto>>(users);
-        return Ok(dto);
+        var result = await _service.GetUsers();
+        return Ok(result);
     }
 }

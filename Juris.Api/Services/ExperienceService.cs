@@ -1,9 +1,12 @@
 ﻿using System.Net;
+using AutoMapper;
 using Juris.Common.Exceptions;
 using Juris.Api.IServices;
+using Juris.Common.Dtos.Experience;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
+using Profile = Juris.Domain.Entities.Profile;
 
 namespace Juris.Api.Services;
 
@@ -12,20 +15,23 @@ public class ExperienceService : IExperienceService
     private readonly IGenericRepository<Experience> _experienceRepository;
     private readonly IGenericRepository<Profile> _profileRepository;
     private readonly IUnitOfWork _unitOfWord;
+    private readonly IMapper _mapper;
 
-    public ExperienceService(IUnitOfWork unitOfWork)
+    public ExperienceService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWord = unitOfWork;
+        _mapper = mapper;
         _profileRepository = unitOfWork.ProfileRepository;
         _experienceRepository = unitOfWork.ExperienceRepository;
     }
 
-    public async Task<IEnumerable<Experience>> GetAllExperience(long profileId)
+    public async Task<IEnumerable<ExperienceDto>> GetAllExperience(long profileId)
     {
-        return await _experienceRepository.GetAll(e => e.ProfileId == profileId);
+        var experiences = await _experienceRepository.GetAll(e => e.ProfileId == profileId);
+        return _mapper.Map<IEnumerable<ExperienceDto>>(experiences);
     }
 
-    public async Task<Experience> CreateExperience(Experience experience, long profileId, long userId)
+    public async Task<ExperienceDto> CreateExperience(CreateExperienceDto dto, long profileId, long userId)
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
@@ -36,10 +42,11 @@ public class ExperienceService : IExperienceService
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
+        var experience = _mapper.Map<Experience>(dto);
         experience.ProfileId = profileId;
         await _experienceRepository.Insert(experience);
         await _unitOfWord.Save();
-        return experience;
+        return _mapper.Map<ExperienceDto>(experience);
     }
 
     public async Task DeleteExperience(long id, long userId)

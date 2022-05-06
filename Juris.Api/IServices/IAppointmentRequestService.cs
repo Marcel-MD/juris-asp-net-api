@@ -1,11 +1,11 @@
-﻿using Juris.Domain.Entities;
+﻿using Juris.Common.Dtos.AppointmentRequest;
 
 namespace Juris.Api.IServices;
 
 public interface IAppointmentRequestService
 {
-    Task<IEnumerable<AppointmentRequest>> GetAllRequests(long userId);
-    Task<AppointmentRequest> CreateRequest(AppointmentRequest request, long userId);
+    Task<IEnumerable<AppointmentRequestDto>> GetAllRequests(long userId);
+    Task<AppointmentRequestDto> CreateRequest(CreateAppointmentRequestDto request, long userId);
     Task DeleteRequest(long requestId, long userId);
     Task UpdateRequestStatus(string status, long requestId, long userId);
 }

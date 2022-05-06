@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using AutoMapper;
 using Juris.Common.Exceptions;
 using Juris.Api.IServices;
+using Juris.Common.Dtos.AppointmentRequest;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Domain.Identity;
@@ -13,30 +15,34 @@ namespace Juris.Api.Services;
 public class AppointmentRequestService : IAppointmentRequestService
 {
     private readonly IMailService _mailService;
+    private readonly IMapper _mapper;
     private readonly IGenericRepository<AppointmentRequest> _repository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
 
-    public AppointmentRequestService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService)
+    public AppointmentRequestService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _repository = unitOfWork.AppointmentRequestRepository;
         _userManager = userManager;
         _mailService = mailService;
+        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AppointmentRequest>> GetAllRequests(long userId)
+    public async Task<IEnumerable<AppointmentRequestDto>> GetAllRequests(long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
                 string.Format(GlobalResource.UserNotFound, userId));
 
-        return await _repository.GetAll(a => a.UserId == userId);
+        var requests = await _repository.GetAll(a => a.UserId == userId);
+        return _mapper.Map<IEnumerable<AppointmentRequestDto>>(requests);
     }
 
-    public async Task<AppointmentRequest> CreateRequest(AppointmentRequest request, long userId)
+    public async Task<AppointmentRequestDto> CreateRequest(CreateAppointmentRequestDto requestDto, long userId)
     {
+        var request = _mapper.Map<AppointmentRequest>(requestDto);
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
@@ -59,7 +65,7 @@ public class AppointmentRequestService : IAppointmentRequestService
                 GlobalResource.CantSendEmail);
         }
 
-        return request;
+        return _mapper.Map<AppointmentRequestDto>(request);
     }
 
     public async Task DeleteRequest(long requestId, long userId)

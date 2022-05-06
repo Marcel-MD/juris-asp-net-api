@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using AutoMapper;
 using Juris.Common.Exceptions;
 using Juris.Api.IServices;
+using Juris.Common.Dtos.City;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -11,29 +13,34 @@ public class CityService : ICityService
 {
     private readonly IGenericRepository<City> _cityRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CityService(IUnitOfWork unitOfWork)
+    public CityService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
         _cityRepository = _unitOfWork.CityRepository;
     }
 
-    public async Task<IEnumerable<City>> GetCities()
+    public async Task<IEnumerable<CityDto>> GetCities()
     {
-        return await _cityRepository.GetAll();
+        var cities = await _cityRepository.GetAll();
+        return _mapper.Map<IEnumerable<CityDto>>(cities);
     }
 
-    public async Task<City> CreateCity(City city)
+    public async Task<CityDto> CreateCity(CreateCityDto cityDto)
     {
-        var cit = await _cityRepository.Get(c => c.Name == city.Name);
+        var cit = await _cityRepository.Get(c => c.Name == cityDto.Name);
         if (cit != null)
             throw new HttpResponseException(HttpStatusCode.BadRequest,
-                string.Format(GlobalResource.CityNameExists, city.Name));
+                string.Format(GlobalResource.CityNameExists, cityDto.Name));
 
+        var city = _mapper.Map<City>(cityDto);
+        
         await _cityRepository.Insert(city);
         await _unitOfWork.Save();
 
-        return city;
+        return _mapper.Map<CityDto>(city);
     }
 
     public async Task DeleteCity(long id)

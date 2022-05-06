@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Net;
+using AutoMapper;
 using Juris.Common.Exceptions;
 using Juris.Api.IServices;
+using Juris.Common.Dtos.Profile;
 using Juris.Common.Parameters;
 using Juris.Dal.Repositories;
 using Juris.Domain.Constants;
@@ -10,12 +12,14 @@ using Juris.Domain.Identity;
 using Juris.Resource;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
+using Profile = Juris.Domain.Entities.Profile;
 
 namespace Juris.Api.Services;
 
 public class ProfileService : IProfileService
 {
     private readonly IBlobService _blobService;
+    private readonly IMapper _mapper;
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
     private readonly IGenericRepository<City> _cityRepository;
     private readonly IMailService _mailService;
@@ -24,7 +28,7 @@ public class ProfileService : IProfileService
     private readonly UserManager<User> _userManager;
 
     public ProfileService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService,
-        IBlobService blobService)
+        IBlobService blobService, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _profileRepository = unitOfWork.ProfileRepository;
@@ -33,9 +37,10 @@ public class ProfileService : IProfileService
         _userManager = userManager;
         _mailService = mailService;
         _blobService = blobService;
+        _mapper = mapper;
     }
 
-    public async Task<Profile> CreateEmptyProfile(long userId)
+    public async Task<ListProfileDto> CreateEmptyProfile(long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
@@ -63,7 +68,7 @@ public class ProfileService : IProfileService
 
         await _profileRepository.Insert(profile);
         await _unitOfWork.Save();
-        return profile;
+        return _mapper.Map<ListProfileDto>(profile);
     }
 
     public async Task DeleteProfile(long profileId, long userId)
@@ -122,7 +127,7 @@ public class ProfileService : IProfileService
         }
     }
 
-    public async Task<IEnumerable<Profile>> GetAllProfiles(ProfileParameters parameters)
+    public async Task<IEnumerable<ListProfileDto>> GetAllProfiles(ProfileParameters parameters)
     {
         Expression<Func<Profile, bool>> filter = profile =>
             (parameters.Status == null || profile.Status == parameters.Status) &&
@@ -149,11 +154,11 @@ public class ProfileService : IProfileService
         var response = await _profileRepository.GetAll(
             filter, orderBy, parameters.PageNumber, parameters.PageSize,
             p => p.City, p => p.ProfileCategory);
-
-        return response;
+        
+        return _mapper.Map<IEnumerable<ListProfileDto>>(response);
     }
 
-    public async Task<Profile> GetProfileById(long id)
+    public async Task<ProfileDto> GetProfileById(long id)
     {
         var profile = await _profileRepository.Get(p => p.Id == id,
             p => p.City, p => p.ProfileCategory, p => p.Educations, p => p.Experiences, p => p.Reviews);
@@ -161,10 +166,10 @@ public class ProfileService : IProfileService
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound, string.Format(GlobalResource.ProfileNotFound, id));
 
-        return profile;
+        return _mapper.Map<ProfileDto>(profile);;
     }
 
-    public async Task<Profile> CreateProfile(Profile profile, long userId)
+    public async Task<ListProfileDto> CreateProfile(UpdateProfileDto profileDto, long userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
@@ -176,24 +181,26 @@ public class ProfileService : IProfileService
             throw new HttpResponseException(HttpStatusCode.BadRequest,
                 string.Format(GlobalResource.UserHasProfile, userId));
 
-        var city = await _cityRepository.GetById(profile.CityId);
+        var city = await _cityRepository.GetById(profileDto.CityId);
         if (city == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
-                string.Format(GlobalResource.CityNotFound, profile.CityId));
+                string.Format(GlobalResource.CityNotFound, profileDto.CityId));
 
-        var category = await _categoryRepository.GetById(profile.ProfileCategoryId);
+        var category = await _categoryRepository.GetById(profileDto.ProfileCategoryId);
         if (category == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
-                string.Format(GlobalResource.ProfileCategoryNotFound, profile.ProfileCategoryId));
+                string.Format(GlobalResource.ProfileCategoryNotFound, profileDto.ProfileCategoryId));
+
+        var profile = _mapper.Map<Profile>(profileDto);
 
         profile.UserId = userId;
 
         await _profileRepository.Insert(profile);
         await _unitOfWork.Save();
-        return profile;
+        return _mapper.Map<ListProfileDto>(profile);
     }
 
-    public async Task<Profile> UpdateProfile(Profile profile, long profileId, long userId)
+    public async Task<ListProfileDto> UpdateProfile(UpdateProfileDto profileDto, long profileId, long userId)
     {
         var existingProfile = await _profileRepository.GetById(profileId);
         if (existingProfile == null)
@@ -204,29 +211,29 @@ public class ProfileService : IProfileService
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
 
-        var city = await _cityRepository.GetById(profile.CityId);
+        var city = await _cityRepository.GetById(profileDto.CityId);
         if (city == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
-                string.Format(GlobalResource.CityNotFound, profile.CityId));
+                string.Format(GlobalResource.CityNotFound, profileDto.CityId));
 
-        var category = await _categoryRepository.GetById(profile.ProfileCategoryId);
+        var category = await _categoryRepository.GetById(profileDto.ProfileCategoryId);
         if (category == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
-                string.Format(GlobalResource.ProfileCategoryNotFound, profile.ProfileCategoryId));
+                string.Format(GlobalResource.ProfileCategoryNotFound, profileDto.ProfileCategoryId));
 
-        existingProfile.FirstName = profile.FirstName;
-        existingProfile.LastName = profile.LastName;
-        existingProfile.Description = profile.Description;
-        existingProfile.PhoneNumber = profile.PhoneNumber;
-        existingProfile.Price = profile.Price;
-        existingProfile.ProfileCategoryId = profile.ProfileCategoryId;
-        existingProfile.Address = profile.Address;
-        existingProfile.CityId = profile.CityId;
+        existingProfile.FirstName = profileDto.FirstName;
+        existingProfile.LastName = profileDto.LastName;
+        existingProfile.Description = profileDto.Description;
+        existingProfile.PhoneNumber = profileDto.PhoneNumber;
+        existingProfile.Price = profileDto.Price;
+        existingProfile.ProfileCategoryId = profileDto.ProfileCategoryId;
+        existingProfile.Address = profileDto.Address;
+        existingProfile.CityId = profileDto.CityId;
         existingProfile.Status = ProfileStatus.Unapproved;
 
         _profileRepository.Update(existingProfile);
         await _unitOfWork.Save();
-        return existingProfile;
+        return _mapper.Map<ListProfileDto>(existingProfile);
     }
 
     public async Task<string> UpdateProfileImage(IFormFile image, long profileId, long userId)

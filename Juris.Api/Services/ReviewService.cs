@@ -1,9 +1,12 @@
 ﻿using System.Net;
+using AutoMapper;
 using Juris.Common.Exceptions;
 using Juris.Api.IServices;
+using Juris.Common.Dtos.Review;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
+using Profile = Juris.Domain.Entities.Profile;
 
 namespace Juris.Api.Services;
 
@@ -12,31 +15,35 @@ public class ReviewService : IReviewService
     private readonly IGenericRepository<Profile> _profileRepository;
     private readonly IGenericRepository<Review> _reviewRepository;
     private readonly IUnitOfWork _unitOfWord;
+    private readonly IMapper _mapper;
 
-    public ReviewService(IUnitOfWork unitOfWork)
+    public ReviewService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWord = unitOfWork;
+        _mapper = mapper;
         _profileRepository = unitOfWork.ProfileRepository;
         _reviewRepository = unitOfWork.ReviewRepository;
     }
 
-    public async Task<IEnumerable<Review>> GetAllReviews(long profileId)
+    public async Task<IEnumerable<ReviewDto>> GetAllReviews(long profileId)
     {
-        return await _reviewRepository.GetAll(e => e.ProfileId == profileId);
+        var reviews = await _reviewRepository.GetAll(e => e.ProfileId == profileId);
+        return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
     }
 
-    public async Task<Review> CreateReview(Review review, long profileId)
+    public async Task<ReviewDto> CreateReview(CreateReviewDto dto, long profileId)
     {
         var profile = await _profileRepository.GetById(profileId);
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
                 string.Format(GlobalResource.ProfileNotFound, profileId));
 
+        var review = _mapper.Map<Review>(dto);
         review.ProfileId = profileId;
         await _reviewRepository.Insert(review);
         await _unitOfWord.Save();
         await UpdateProfileRating(profileId);
-        return review;
+        return _mapper.Map<ReviewDto>(review);;
     }
 
     public async Task DeleteReview(long id)

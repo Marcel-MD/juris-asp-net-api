@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using AutoMapper;
 using Juris.Common.Exceptions;
 using Juris.Api.IServices;
+using Juris.Common.Dtos.ProfileCategory;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -11,28 +13,34 @@ public class ProfileCategoryService : IProfileCategoryService
 {
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public ProfileCategoryService(IUnitOfWork unitOfWork)
+    public ProfileCategoryService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
         _categoryRepository = _unitOfWork.ProfileCategoryRepository;
     }
 
-    public async Task<IEnumerable<ProfileCategory>> GetProfileCategories()
+    public async Task<IEnumerable<ProfileCategoryDto>> GetProfileCategories()
     {
-        return await _categoryRepository.GetAll();
+        var categories = await _categoryRepository.GetAll();
+        return _mapper.Map<IEnumerable<ProfileCategoryDto>>(categories);
     }
 
-    public async Task<ProfileCategory> CreateProfileCategory(ProfileCategory category)
+    public async Task<ProfileCategoryDto> CreateProfileCategory(CreateProfileCategoryDto categoryDto)
     {
-        var cat = await _categoryRepository.Get(c => c.Category == category.Category);
+        var cat = await _categoryRepository.Get(c => c.Category == categoryDto.Category);
         if (cat != null)
             throw new HttpResponseException(HttpStatusCode.BadRequest,
-                string.Format(GlobalResource.CategoryNameExists, category.Category));
+                string.Format(GlobalResource.CategoryNameExists, categoryDto.Category));
 
+        var category = _mapper.Map<ProfileCategory>(categoryDto);
+        
         await _categoryRepository.Insert(category);
         await _unitOfWork.Save();
-        return category;
+
+        return _mapper.Map<ProfileCategoryDto>(category);
     }
 
     public async Task DeleteProfileCategory(long id)
