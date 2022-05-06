@@ -1,4 +1,4 @@
-﻿using Juris.Api.Dtos.City;
+﻿using Juris.Common.Dtos.City;
 using Juris.Domain.Entities;
 
 namespace Juris.Api.MapperProfiles;

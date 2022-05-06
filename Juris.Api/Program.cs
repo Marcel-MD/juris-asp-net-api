@@ -1,6 +1,6 @@
 using Azure.Storage.Blobs;
 using Juris.Api.Configuration;
-using Juris.Api.Exceptions;
+using Juris.Api.Filters;
 using Juris.Api.IServices;
 using Juris.Api.Services;
 using Juris.Dal;

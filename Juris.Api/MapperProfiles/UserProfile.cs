@@ -1,4 +1,4 @@
-﻿using Juris.Api.Dtos.User;
+﻿using Juris.Common.Dtos.User;
 using Juris.Domain.Identity;
 
 namespace Juris.Api.MapperProfiles;

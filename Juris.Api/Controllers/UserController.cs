@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Juris.Api.Dtos.User;
+using Juris.Common.Dtos.User;
 using Juris.Api.IServices;
 using Juris.Domain.Constants;
 using Juris.Domain.Identity;

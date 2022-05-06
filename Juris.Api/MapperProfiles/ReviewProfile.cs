@@ -1,4 +1,4 @@
-﻿using Juris.Api.Dtos.Review;
+﻿using Juris.Common.Dtos.Review;
 using Juris.Domain.Entities;
 using Profile = AutoMapper.Profile;
 

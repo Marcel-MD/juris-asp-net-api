@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Juris.Api.Dtos.Profile;
+using Juris.Common.Dtos.Profile;
 using Juris.Api.IServices;
-using Juris.Api.Parameters;
+using Juris.Common.Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Profile = Juris.Domain.Entities.Profile;

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Juris.Api.Exceptions;
+using Juris.Common.Exceptions;
 using Juris.Api.IServices;
 using Juris.Resource;
 

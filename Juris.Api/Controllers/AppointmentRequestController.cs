@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Juris.Api.Dtos.AppointmentRequest;
+using Juris.Common.Dtos.AppointmentRequest;
 using Juris.Api.IServices;
 using Juris.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Resource", "Juris.Res
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Test", "Juris.Test\Juris.Test.csproj", "{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Common", "Juris.Common\Juris.Common.csproj", "{69641EBA-A812-404D-A38A-FE216BD86750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

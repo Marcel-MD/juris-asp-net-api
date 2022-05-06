@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Juris.Api.Dtos.Education;
+using Juris.Common.Dtos.Education;
 using Juris.Api.IServices;
 using Juris.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;

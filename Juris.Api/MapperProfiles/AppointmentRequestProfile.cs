@@ -1,4 +1,4 @@
-﻿using Juris.Api.Dtos.AppointmentRequest;
+﻿using Juris.Common.Dtos.AppointmentRequest;
 using Juris.Domain.Entities;
 
 namespace Juris.Api.MapperProfiles;

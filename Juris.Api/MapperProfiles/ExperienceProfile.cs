@@ -1,4 +1,4 @@
-﻿using Juris.Api.Dtos.Experience;
+﻿using Juris.Common.Dtos.Experience;
 using Juris.Domain.Entities;
 
 namespace Juris.Api.MapperProfiles;

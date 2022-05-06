@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using System.Net;
-using Juris.Api.Exceptions;
+using Juris.Common.Exceptions;
 using Juris.Api.IServices;
-using Juris.Api.Parameters;
+using Juris.Common.Parameters;
 using Juris.Dal.Repositories;
 using Juris.Domain.Constants;
 using Juris.Domain.Entities;

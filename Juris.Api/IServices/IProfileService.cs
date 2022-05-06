@@ -1,4 +1,4 @@
-﻿using Juris.Api.Parameters;
+﻿using Juris.Common.Parameters;
 using Juris.Domain.Entities;
 
 namespace Juris.Api.IServices;

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Juris.Api.Dtos.Profile;
+using Juris.Common.Dtos.Profile;
 
 namespace Juris.Api.MapperProfiles;
 
