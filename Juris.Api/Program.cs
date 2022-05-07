@@ -1,8 +1,9 @@
 using Azure.Storage.Blobs;
-using Juris.Api.Configuration;
+using Juris.Bll.Configuration;
+using Juris.Api.Extensions;
 using Juris.Api.Filters;
-using Juris.Api.IServices;
-using Juris.Api.Services;
+using Juris.Bll.IServices;
+using Juris.Bll.Services;
 using Juris.Dal;
 using Juris.Dal.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,8 @@ builder.Services.AddTransient<IMailService, MailService>();
 
 // Blob
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("azurite")));
-builder.Services.AddSingleton<IBlobService, BlobService>();
+builder.Services.AddSingleton<IBlobService>(sp =>
+    new BlobService(sp.GetService<BlobServiceClient>(), builder.Configuration.GetValue<string>("BlobContainer")));
 
 // Identity
 builder.Services.ConfigureIdentity();
@@ -33,6 +35,7 @@ builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService>();

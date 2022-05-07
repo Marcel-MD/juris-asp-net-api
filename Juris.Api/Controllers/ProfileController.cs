@@ -1,5 +1,5 @@
 ﻿using Juris.Common.Dtos.Profile;
-using Juris.Api.IServices;
+using Juris.Bll.IServices;
 using Juris.Common.Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
