@@ -8,7 +8,7 @@ namespace Juris.Dal;
 
 public static class DatabaseSeeder
 {
-    public static async Task Seed(IApplicationBuilder app)
+    public static async Task Seed(this IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
 

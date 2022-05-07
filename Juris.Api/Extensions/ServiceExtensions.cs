@@ -3,6 +3,7 @@ using Juris.Dal;
 using Juris.Domain.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -77,6 +78,33 @@ public static class ServiceExtensions
                     new string[] { }
                 }
             });
+        });
+    }
+
+    public static void ConfigureCors(this IServiceCollection services)
+    {
+        services.AddCors(o =>
+        {
+            o.AddPolicy("AllowAny", cors =>
+                cors.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            );
+        });
+    }
+
+    public static void ConfigureValidationErrorResponse(this IServiceCollection services)
+    {
+        services.Configure<ApiBehaviorOptions>(o =>
+        {
+            o.InvalidModelStateResponseFactory = actionContext =>
+                new BadRequestObjectResult(new
+                {
+                    errors =
+                        actionContext.ModelState.Values.SelectMany(m => m.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .ToList()
+                });
         });
     }
 }

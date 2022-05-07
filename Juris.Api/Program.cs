@@ -6,10 +6,7 @@ using Juris.Bll.IServices;
 using Juris.Bll.Services;
 using Juris.Dal;
 using Juris.Dal.Repositories;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,37 +49,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 
 // Custom Validation Errors Response
-builder.Services.Configure<ApiBehaviorOptions>(o =>
-{
-    o.InvalidModelStateResponseFactory = actionContext =>
-        new BadRequestObjectResult(new
-        {
-            errors =
-                actionContext.ModelState.Values.SelectMany(m => m.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList()
-        });
-});
+builder.Services.ConfigureValidationErrorResponse();
 
 // Cors Policy
-builder.Services.AddCors(o =>
-{
-    o.AddPolicy("AllowAny", cors =>
-        cors.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-    );
-});
+builder.Services.ConfigureCors();
 
 // Serilog
-builder.Host.UseSerilog((ctx, lc) => lc
-    .WriteTo.Console()
-    .WriteTo.File(
-        "..\\logs\\log-.txt",
-        rollingInterval: RollingInterval.Day,
-        restrictedToMinimumLevel: LogEventLevel.Information
-    )
-);
+builder.Host.ConfigureSerilog();
 
 var app = builder.Build();
 
@@ -100,13 +73,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDbTransaction();
+
 app.MapControllers();
 
-await DatabaseSeeder.Seed(app);
-
+await app.Seed();
 
 app.Run();
 
-public partial class Program
-{
-}
+public partial class Program { }
