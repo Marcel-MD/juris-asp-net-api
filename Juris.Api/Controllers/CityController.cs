@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Juris.Api.Dtos.City;
-using Juris.Api.IServices;
-using Juris.Domain.Entities;
+﻿using Juris.Common.Dtos.City;
+using Juris.Bll.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,31 +8,26 @@ namespace Juris.Api.Controllers;
 [Route("api/city")]
 public class CityController : BaseController
 {
-    private readonly IMapper _mapper;
     private readonly ICityService _service;
 
-    public CityController(ICityService service, IMapper mapper)
+    public CityController(ICityService service)
     {
         _service = service;
-        _mapper = mapper;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetCities()
     {
         var result = await _service.GetCities();
-        var resultDto = _mapper.Map<IEnumerable<CityDto>>(result);
-        return Ok(resultDto);
+        return Ok(result);
     }
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateCity(CreateCityDto dto)
     {
-        var city = _mapper.Map<City>(dto);
-        city = await _service.CreateCity(city);
-        var cityDto = _mapper.Map<CityDto>(city);
-        return Ok(cityDto);
+        var result = await _service.CreateCity(dto);
+        return Ok(result);
     }
 
     [Authorize(Roles = "Admin")]

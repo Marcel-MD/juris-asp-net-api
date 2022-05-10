@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using Juris.Api.Exceptions;
+using Juris.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juris.Api.Controllers;

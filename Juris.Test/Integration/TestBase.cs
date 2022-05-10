@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Juris.Api.Dtos.User;
+using Juris.Common.Dtos.User;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Juris.Test.Integration;

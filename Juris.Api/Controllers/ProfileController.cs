@@ -1,68 +1,57 @@
-﻿using AutoMapper;
-using Juris.Api.Dtos.Profile;
-using Juris.Api.IServices;
-using Juris.Api.Parameters;
+﻿using Juris.Common.Dtos.Profile;
+using Juris.Bll.IServices;
+using Juris.Common.Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Profile = Juris.Domain.Entities.Profile;
 
 namespace Juris.Api.Controllers;
 
 [Route("api/profile")]
 public class ProfileController : BaseController
 {
-    private readonly IMapper _mapper;
     private readonly IProfileService _service;
 
-    public ProfileController(IProfileService service, IMapper mapper)
+    public ProfileController(IProfileService service)
     {
         _service = service;
-        _mapper = mapper;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllProfiles([FromQuery] ProfileParameters parameters)
     {
         var result = await _service.GetAllProfiles(parameters);
-        var resultDto = _mapper.Map<IEnumerable<ListProfileDto>>(result);
-        return Ok(resultDto);
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProfileById(long id)
     {
         var result = await _service.GetProfileById(id);
-        var resultDto = _mapper.Map<ProfileDto>(result);
-        return Ok(resultDto);
+        return Ok(result);
     }
 
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateProfile(UpdateProfileDto dto)
     {
-        var profile = _mapper.Map<Profile>(dto);
-        profile = await _service.CreateProfile(profile, GetCurrentUserId());
-        var profileDto = _mapper.Map<ListProfileDto>(profile);
-        return Ok(profileDto);
+        var result = await _service.CreateProfile(dto, GetCurrentUserId());
+        return Ok(result);
     }
 
     [Authorize]
     [HttpPost("empty")]
     public async Task<IActionResult> CreateEmptyProfile()
     {
-        var profile = await _service.CreateEmptyProfile(GetCurrentUserId());
-        var profileDto = _mapper.Map<ListProfileDto>(profile);
-        return Ok(profileDto);
+        var result = await _service.CreateEmptyProfile(GetCurrentUserId());
+        return Ok(result);
     }
 
     [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateProfile(long id, UpdateProfileDto dto)
     {
-        var profile = _mapper.Map<Profile>(dto);
-        profile = await _service.UpdateProfile(profile, id, GetCurrentUserId());
-        var profileDto = _mapper.Map<ListProfileDto>(profile);
-        return Ok(profileDto);
+        var result = await _service.UpdateProfile(dto, id, GetCurrentUserId());
+        return Ok(result);
     }
 
     [Authorize]
@@ -77,8 +66,8 @@ public class ProfileController : BaseController
     [HttpPatch("{id}/image")]
     public async Task<IActionResult> UpdateProfileImage(long id, IFormFile image)
     {
-        var response = await _service.UpdateProfileImage(image, id, GetCurrentUserId());
-        return Ok(response);
+        var result = await _service.UpdateProfileImage(image, id, GetCurrentUserId());
+        return Ok(result);
     }
 
     [Authorize(Roles = "Admin")]

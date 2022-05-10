@@ -5,13 +5,17 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Domain", "Juris.Domain\Juris.Domain.csproj", "{571F696A-FB37-42A0-954B-3F9C415D9A96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Data", "Juris.Data\Juris.Data.csproj", "{17C7B2FF-7399-4936-8E4F-7AF3F98E0D54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Dal", "Juris.Dal\Juris.Dal.csproj", "{17C7B2FF-7399-4936-8E4F-7AF3F98E0D54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Api", "Juris.Api\Juris.Api.csproj", "{81BF92F2-6F03-4ADD-87C5-266EA6A686C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Resource", "Juris.Resource\Juris.Resource.csproj", "{1FB420C3-C361-4C56-BC8A-7F4A82869296}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Test", "Juris.Test\Juris.Test.csproj", "{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Common", "Juris.Common\Juris.Common.csproj", "{69641EBA-A812-404D-A38A-FE216BD86750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juris.Bll", "Juris.Bll\Juris.Bll.csproj", "{80EFB2E0-486B-4682-B287-4BF61C1BE800}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A47C931-9AF2-4F8F-B8BA-6A2003621E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69641EBA-A812-404D-A38A-FE216BD86750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80EFB2E0-486B-4682-B287-4BF61C1BE800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80EFB2E0-486B-4682-B287-4BF61C1BE800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80EFB2E0-486B-4682-B287-4BF61C1BE800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80EFB2E0-486B-4682-B287-4BF61C1BE800}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

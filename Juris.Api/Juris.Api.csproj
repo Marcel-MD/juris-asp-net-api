@@ -8,9 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.11.0" />
-        <PackageReference Include="MailKit" Version="3.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
@@ -19,16 +16,15 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
-        <PackageReference Include="MimeKit" Version="3.2.0" />
         <PackageReference Include="MimeTypeMapOfficial" Version="1.0.17" />
         <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Juris.Data\Juris.Data.csproj" />
-        <ProjectReference Include="..\Juris.Domain\Juris.Domain.csproj" />
-        <ProjectReference Include="..\Juris.Resource\Juris.Resource.csproj" />
+        <ProjectReference Include="..\Juris.Bll\Juris.Bll.csproj" />
+        <ProjectReference Include="..\Juris.Common\Juris.Common.csproj" />
+        <ProjectReference Include="..\Juris.Dal\Juris.Dal.csproj" />
     </ItemGroup>
 
 </Project>

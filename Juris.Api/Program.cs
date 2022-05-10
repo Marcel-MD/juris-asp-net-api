@@ -1,14 +1,12 @@
 using Azure.Storage.Blobs;
-using Juris.Api.Configuration;
-using Juris.Api.Exceptions;
-using Juris.Api.IServices;
-using Juris.Api.Services;
-using Juris.Data;
-using Juris.Data.Repositories;
-using Microsoft.AspNetCore.Mvc;
+using Juris.Bll.Configuration;
+using Juris.Api.Extensions;
+using Juris.Api.Filters;
+using Juris.Bll.IServices;
+using Juris.Bll.Services;
+using Juris.Dal;
+using Juris.Dal.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +21,8 @@ builder.Services.AddTransient<IMailService, MailService>();
 
 // Blob
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("azurite")));
-builder.Services.AddSingleton<IBlobService, BlobService>();
+builder.Services.AddSingleton<IBlobService>(sp =>
+    new BlobService(sp.GetService<BlobServiceClient>(), builder.Configuration.GetValue<string>("BlobContainer")));
 
 // Identity
 builder.Services.ConfigureIdentity();
@@ -33,7 +32,9 @@ builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAppointmentRequestService, AppointmentRequestService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IEducationService, EducationService>();
@@ -48,37 +49,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 
 // Custom Validation Errors Response
-builder.Services.Configure<ApiBehaviorOptions>(o =>
-{
-    o.InvalidModelStateResponseFactory = actionContext =>
-        new BadRequestObjectResult(new
-        {
-            errors =
-                actionContext.ModelState.Values.SelectMany(m => m.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList()
-        });
-});
+builder.Services.ConfigureValidationErrorResponse();
 
 // Cors Policy
-builder.Services.AddCors(o =>
-{
-    o.AddPolicy("AllowAny", cors =>
-        cors.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-    );
-});
+builder.Services.ConfigureCors();
 
 // Serilog
-builder.Host.UseSerilog((ctx, lc) => lc
-    .WriteTo.Console()
-    .WriteTo.File(
-        "..\\logs\\log-.txt",
-        rollingInterval: RollingInterval.Day,
-        restrictedToMinimumLevel: LogEventLevel.Information
-    )
-);
+builder.Host.ConfigureSerilog();
 
 var app = builder.Build();
 
@@ -96,13 +73,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDbTransaction();
+
 app.MapControllers();
 
-await DatabaseSeeder.Seed(app);
-
+await app.Seed();
 
 app.Run();
 
-public partial class Program
-{
-}
+public partial class Program { }

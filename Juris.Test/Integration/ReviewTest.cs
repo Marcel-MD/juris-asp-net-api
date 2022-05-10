@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Bogus;
 using FluentAssertions;
-using Juris.Api.Dtos.Review;
+using Juris.Common.Dtos.Review;
 using Xunit;
 
 namespace Juris.Test.Integration;

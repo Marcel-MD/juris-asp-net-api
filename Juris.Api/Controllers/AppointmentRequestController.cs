@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Juris.Api.Dtos.AppointmentRequest;
-using Juris.Api.IServices;
-using Juris.Domain.Entities;
+﻿using Juris.Common.Dtos.AppointmentRequest;
+using Juris.Bll.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,13 +8,11 @@ namespace Juris.Api.Controllers;
 [Route("api/appointment")]
 public class AppointmentRequestController : BaseController
 {
-    private readonly IMapper _mapper;
     private readonly IAppointmentRequestService _service;
 
-    public AppointmentRequestController(IAppointmentRequestService service, IMapper mapper)
+    public AppointmentRequestController(IAppointmentRequestService service)
     {
         _service = service;
-        _mapper = mapper;
     }
 
     [Authorize]
@@ -26,17 +22,14 @@ public class AppointmentRequestController : BaseController
         if (userId != GetCurrentUserId()) return Unauthorized();
 
         var result = await _service.GetAllRequests(userId);
-        var resultDto = _mapper.Map<IEnumerable<AppointmentRequestDto>>(result);
-        return Ok(resultDto);
+        return Ok(result);
     }
 
     [HttpPost("{userId}")]
     public async Task<IActionResult> CreateAppointmentRequest(long userId, CreateAppointmentRequestDto dto)
     {
-        var appointmentRequest = _mapper.Map<AppointmentRequest>(dto);
-        appointmentRequest = await _service.CreateRequest(appointmentRequest, userId);
-        var appointmentDto = _mapper.Map<AppointmentRequestDto>(appointmentRequest);
-        return Ok(appointmentDto);
+        var result = await _service.CreateRequest(dto, userId);
+        return Ok(result);
     }
 
     [Authorize]
