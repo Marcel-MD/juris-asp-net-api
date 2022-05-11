@@ -4,6 +4,7 @@ using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.AppointmentRequest;
 using Juris.Dal.Repositories;
+using Juris.Domain.Constants;
 using Juris.Domain.Entities;
 using Juris.Domain.Identity;
 using Juris.Resource;
@@ -20,7 +21,8 @@ public class AppointmentRequestService : IAppointmentRequestService
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
 
-    public AppointmentRequestService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService, IMapper mapper)
+    public AppointmentRequestService(IUnitOfWork unitOfWork, UserManager<User> userManager, IMailService mailService,
+        IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _repository = unitOfWork.AppointmentRequestRepository;
@@ -97,5 +99,27 @@ public class AppointmentRequestService : IAppointmentRequestService
         request.Status = status;
         _repository.Update(request);
         await _unitOfWork.Save();
+
+        try
+        {
+            var message = request.Status == AppointmentStatus.Approved
+                ? GlobalResource.RequestApprovedEmail
+                : GlobalResource.RequestDeclinedEmail;
+
+            var subject = request.Status == AppointmentStatus.Approved
+                ? GlobalResource.RequestApprovedSubject
+                : GlobalResource.RequestDeclinedSubject;
+
+            await _mailService.SendAsync(
+                request.Email,
+                subject,
+                message);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+            throw new HttpResponseException(HttpStatusCode.FailedDependency,
+                GlobalResource.CantSendEmail);
+        }
     }
 }
