@@ -2,7 +2,6 @@
 
 namespace Juris.Domain.Identity;
 
-public class UserToken: IdentityUserToken<long>
+public class UserToken : IdentityUserToken<long>
 {
-    
 }

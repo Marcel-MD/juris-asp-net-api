@@ -1,5 +1,5 @@
-﻿using Juris.Common.Dtos.User;
-using Juris.Bll.IServices;
+﻿using Juris.Bll.IServices;
+using Juris.Common.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +13,7 @@ public class UserController : ControllerBase
 
     public UserController(IUserService service)
     {
-        this._service = service;
+        _service = service;
     }
 
     [HttpPost("register")]

@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
+using Juris.Common.Exceptions;
 using Juris.Resource;
 using Microsoft.AspNetCore.Http;
 
@@ -11,7 +11,7 @@ namespace Juris.Bll.Services;
 public class BlobService : IBlobService
 {
     private readonly BlobContainerClient _containerClient;
-    private readonly HashSet<string> _extensions = new(){".jpg", ".jpeg", ".png", ".webp"};
+    private readonly HashSet<string> _extensions = new() {".jpg", ".jpeg", ".png", ".webp"};
 
     public BlobService(BlobServiceClient blobClient, string containerName)
     {
@@ -23,7 +23,8 @@ public class BlobService : IBlobService
         var blobClient = _containerClient.GetBlobClient(name);
 
         if (!await blobClient.ExistsAsync())
-            throw new HttpResponseException(HttpStatusCode.BadRequest, string.Format(GlobalResource.FileNotFound, name));
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.FileNotFound, name));
 
         return await blobClient.OpenReadAsync();
     }
@@ -32,10 +33,7 @@ public class BlobService : IBlobService
     {
         var items = new List<string>();
 
-        await foreach (var blob in _containerClient.GetBlobsAsync())
-        {
-            items.Add(blob.Name);
-        }
+        await foreach (var blob in _containerClient.GetBlobsAsync()) items.Add(blob.Name);
 
         return items;
     }
@@ -44,17 +42,18 @@ public class BlobService : IBlobService
     {
         if (file == null || file.Length is < 1 or > 3000000)
             throw new HttpResponseException(HttpStatusCode.BadRequest, string.Format(GlobalResource.FileSizeLess, 3));
-        
+
         var extension = Path.GetExtension(file.FileName);
 
         if (!_extensions.Contains(extension))
-            throw new HttpResponseException(HttpStatusCode.BadRequest, string.Format(GlobalResource.UnsupportedFileExtension, extension));
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.UnsupportedFileExtension, extension));
 
-        var fileNameInStorage = Guid.NewGuid().ToString() + extension;
-        
+        var fileNameInStorage = Guid.NewGuid() + extension;
+
         var blobClient = _containerClient.GetBlobClient(fileNameInStorage);
 
-        var httpHeaders = new BlobHttpHeaders()
+        var httpHeaders = new BlobHttpHeaders
         {
             ContentType = file.ContentType
         };
@@ -62,8 +61,9 @@ public class BlobService : IBlobService
         var res = await blobClient.UploadAsync(file.OpenReadStream(), httpHeaders);
 
         if (res == null)
-            throw new HttpResponseException(HttpStatusCode.BadRequest, string.Format(GlobalResource.CantUpload, file.Name));
-        
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                string.Format(GlobalResource.CantUpload, file.Name));
+
         return fileNameInStorage;
     }
 

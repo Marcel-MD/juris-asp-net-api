@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using AutoMapper;
-using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.Education;
+using Juris.Common.Exceptions;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -13,9 +13,9 @@ namespace Juris.Bll.Services;
 public class EducationService : IEducationService
 {
     private readonly IGenericRepository<Education> _educationRepository;
+    private readonly IMapper _mapper;
     private readonly IGenericRepository<Profile> _profileRepository;
     private readonly IUnitOfWork _unitOfWord;
-    private readonly IMapper _mapper;
 
     public EducationService(IUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -41,7 +41,7 @@ public class EducationService : IEducationService
         if (profile.UserId != userId)
             throw new HttpResponseException(HttpStatusCode.Unauthorized,
                 string.Format(GlobalResource.UnauthorizedProfileChange, profileId));
-        
+
         var education = _mapper.Map<Education>(dto);
         education.ProfileId = profileId;
         await _educationRepository.Insert(education);

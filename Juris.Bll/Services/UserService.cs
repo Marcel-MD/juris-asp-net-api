@@ -11,10 +11,10 @@ namespace Juris.Bll.Services;
 
 public class UserService : IUserService
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
     private readonly IAuthService _authService;
     private readonly IMapper _mapper;
+    private readonly RoleManager<Role> _roleManager;
+    private readonly UserManager<User> _userManager;
 
     public UserService(UserManager<User> userManager, RoleManager<Role> roleManager,
         IAuthService authService, IMapper mapper)
@@ -24,14 +24,16 @@ public class UserService : IUserService
         _authService = authService;
         _mapper = mapper;
     }
-    
+
     public async Task<UserDto> RegisterUser(CreateUserDto dto)
     {
         var user = _mapper.Map<User>(dto);
         user.UserName = user.Email;
         var result = await _userManager.CreateAsync(user, dto.Password);
 
-        if (!result.Succeeded) throw new HttpResponseException(HttpStatusCode.BadRequest, result.Errors.Select(e => e.Description).First());
+        if (!result.Succeeded)
+            throw new HttpResponseException(HttpStatusCode.BadRequest,
+                result.Errors.Select(e => e.Description).First());
 
         if (await _roleManager.RoleExistsAsync(RoleType.User)) await _userManager.AddToRoleAsync(user, RoleType.User);
 
@@ -41,7 +43,8 @@ public class UserService : IUserService
 
     public async Task<UserTokenDto> LoginUser(CreateUserDto dto)
     {
-        if (!await _authService.ValidateUser(dto.Email, dto.Password)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+        if (!await _authService.ValidateUser(dto.Email, dto.Password))
+            throw new HttpResponseException(HttpStatusCode.Unauthorized);
 
         var user = await _userManager.FindByEmailAsync(dto.Email);
         var roles = await _userManager.GetRolesAsync(user);

@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using AutoMapper;
-using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.Experience;
+using Juris.Common.Exceptions;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -13,9 +13,9 @@ namespace Juris.Bll.Services;
 public class ExperienceService : IExperienceService
 {
     private readonly IGenericRepository<Experience> _experienceRepository;
+    private readonly IMapper _mapper;
     private readonly IGenericRepository<Profile> _profileRepository;
     private readonly IUnitOfWork _unitOfWord;
-    private readonly IMapper _mapper;
 
     public ExperienceService(IUnitOfWork unitOfWork, IMapper mapper)
     {

@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using AutoMapper;
-using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.City;
+using Juris.Common.Exceptions;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -12,8 +12,8 @@ namespace Juris.Bll.Services;
 public class CityService : ICityService
 {
     private readonly IGenericRepository<City> _cityRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CityService(IUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -36,10 +36,8 @@ public class CityService : ICityService
                 string.Format(GlobalResource.CityNameExists, cityDto.Name));
 
         var city = _mapper.Map<City>(cityDto);
-        
         await _cityRepository.Insert(city);
         await _unitOfWork.Save();
-
         return _mapper.Map<CityDto>(city);
     }
 

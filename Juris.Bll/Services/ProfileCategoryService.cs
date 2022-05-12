@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using AutoMapper;
-using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.ProfileCategory;
+using Juris.Common.Exceptions;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -12,8 +12,8 @@ namespace Juris.Bll.Services;
 public class ProfileCategoryService : IProfileCategoryService
 {
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ProfileCategoryService(IUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -36,7 +36,7 @@ public class ProfileCategoryService : IProfileCategoryService
                 string.Format(GlobalResource.CategoryNameExists, categoryDto.Category));
 
         var category = _mapper.Map<ProfileCategory>(categoryDto);
-        
+
         await _categoryRepository.Insert(category);
         await _unitOfWork.Save();
 

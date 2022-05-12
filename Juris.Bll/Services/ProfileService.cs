@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Net;
 using AutoMapper;
-using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.Profile;
+using Juris.Common.Exceptions;
 using Juris.Common.Parameters;
 using Juris.Dal.Repositories;
 using Juris.Domain.Constants;
@@ -20,10 +20,10 @@ namespace Juris.Bll.Services;
 public class ProfileService : IProfileService
 {
     private readonly IBlobService _blobService;
-    private readonly IMapper _mapper;
     private readonly IGenericRepository<ProfileCategory> _categoryRepository;
     private readonly IGenericRepository<City> _cityRepository;
     private readonly IMailService _mailService;
+    private readonly IMapper _mapper;
     private readonly IGenericRepository<Profile> _profileRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly UserManager<User> _userManager;
@@ -78,12 +78,12 @@ public class ProfileService : IProfileService
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
                 string.Format(GlobalResource.ProfileNotFound, profileId));
-        
+
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user == null)
             throw new HttpResponseException(HttpStatusCode.NotFound,
                 string.Format(GlobalResource.UserNotFound, userId));
-        
+
         var roles = await _userManager.GetRolesAsync(user);
 
         if (profile.UserId != userId && !roles.Contains(RoleType.Admin))
@@ -155,7 +155,7 @@ public class ProfileService : IProfileService
         var response = await _profileRepository.GetAll(
             filter, orderBy, parameters.PageNumber, parameters.PageSize,
             p => p.City, p => p.ProfileCategory);
-        
+
         return _mapper.Map<IEnumerable<ListProfileDto>>(response);
     }
 
@@ -167,7 +167,8 @@ public class ProfileService : IProfileService
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound, string.Format(GlobalResource.ProfileNotFound, id));
 
-        return _mapper.Map<ProfileDto>(profile);;
+        return _mapper.Map<ProfileDto>(profile);
+        ;
     }
 
     public async Task<ListProfileDto> CreateProfile(UpdateProfileDto profileDto, long userId)

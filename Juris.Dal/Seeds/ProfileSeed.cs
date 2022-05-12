@@ -17,8 +17,8 @@ public static class ProfileSeed
             new Profile
             {
                 UserId = 2,
-                FirstName = "Viorel",
-                LastName = "Noroc",
+                FirstName = "Liviu",
+                LastName = "Mocanu",
                 PhoneNumber = "060989543",
                 Description =
                     "I am a great lawyer, look at me! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate. Sit amet massa vitae tortor. Enim nec dui nunc mattis. Mattis molestie a iaculis at erat pellentesque.",
@@ -76,8 +76,8 @@ public static class ProfileSeed
             new Profile
             {
                 UserId = 6,
-                FirstName = "Liviu",
-                LastName = "Mocanu",
+                FirstName = "Razvan",
+                LastName = "Fisher",
                 PhoneNumber = "060981234",
                 Description =
                     "I am good ad judging games, and movies! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Justo donec enim diam vulputate. Sit amet massa vitae tortor. Enim nec dui nunc mattis. Mattis molestie a iaculis at erat pellentesque.",

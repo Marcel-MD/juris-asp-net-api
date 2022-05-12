@@ -17,13 +17,13 @@ public static class UserSeed
         {
             new()
             {
-                UserName = "marcelvlasenco@gmail.com",
-                Email = "marcelvlasenco@gmail.com"
+                UserName = "admin@mailinator.com",
+                Email = "admin@mailinator.com"
             },
             new()
             {
-                UserName = "noroc@mailinator.com",
-                Email = "noroc@mailinator.com"
+                UserName = "mocanu@mailinator.com",
+                Email = "mocanu@mailinator.com"
             },
             new()
             {
@@ -42,8 +42,8 @@ public static class UserSeed
             },
             new()
             {
-                UserName = "mocanu@mailinator.com",
-                Email = "mocanu@mailinator.com"
+                UserName = "fisher@mailinator.com",
+                Email = "fisher@mailinator.com"
             }
         };
 
