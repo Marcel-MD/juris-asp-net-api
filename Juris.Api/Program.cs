@@ -1,7 +1,7 @@
 using Azure.Storage.Blobs;
-using Juris.Bll.Configuration;
 using Juris.Api.Extensions;
 using Juris.Api.Filters;
+using Juris.Bll.Configuration;
 using Juris.Bll.IServices;
 using Juris.Bll.Services;
 using Juris.Dal;
@@ -81,4 +81,6 @@ await app.Seed();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

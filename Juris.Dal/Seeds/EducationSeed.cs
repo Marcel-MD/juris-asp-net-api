@@ -1,99 +1,33 @@
-﻿using Juris.Domain.Entities;
+﻿using Bogus;
+using Juris.Domain.Entities;
 using Serilog;
 
 namespace Juris.Dal.Seeds;
 
 public static class EducationSeed
 {
-    public static async Task Seed(DatabaseContext dbContext)
+    public static async Task Seed(DatabaseContext dbContext, int n)
     {
         if (dbContext.Educations.Any()) return;
-
         Log.Warning("Seeding educations data ...");
 
-        dbContext.Educations.AddRange
-        (
-            new Education
-            {
-                ProfileId = 1,
-                Institution = "UTM",
-                Speciality = "Software Engineering",
-                StartDate = new DateTime(2020, 9, 1),
-                EndDate = new DateTime(2024, 5, 12)
-            },
-            new Education
-            {
-                ProfileId = 2,
-                Institution = "USM",
-                Speciality = "Lawyer",
-                StartDate = new DateTime(2019, 9, 10),
-                EndDate = new DateTime(2023, 4, 30)
-            },
-            new Education
-            {
-                ProfileId = 1,
-                Institution = "ASEM",
-                Speciality = "Economy",
-                StartDate = new DateTime(2016, 8, 10),
-                EndDate = new DateTime(2020, 5, 30)
-            },
-            new Education
-            {
-                ProfileId = 3,
-                Institution = "UTM",
-                Speciality = "Aerospace",
-                StartDate = new DateTime(2020, 9, 1),
-                EndDate = new DateTime(2024, 5, 12)
-            },
-            new Education
-            {
-                ProfileId = 4,
-                Institution = "ULIM",
-                Speciality = "Foreign Languages",
-                StartDate = new DateTime(2021, 9, 1),
-                EndDate = new DateTime(2025, 5, 12)
-            },
-            new Education
-            {
-                ProfileId = 5,
-                Institution = "UTM",
-                Speciality = "Software Engineering",
-                StartDate = new DateTime(2020, 9, 1),
-                EndDate = new DateTime(2024, 5, 12)
-            },
-            new Education
-            {
-                ProfileId = 3,
-                Institution = "USM",
-                Speciality = "Lawyer",
-                StartDate = new DateTime(2019, 9, 10),
-                EndDate = new DateTime(2023, 4, 30)
-            },
-            new Education
-            {
-                ProfileId = 2,
-                Institution = "ASEM",
-                Speciality = "Economy",
-                StartDate = new DateTime(2016, 8, 10),
-                EndDate = new DateTime(2020, 5, 30)
-            },
-            new Education
-            {
-                ProfileId = 4,
-                Institution = "UTM",
-                Speciality = "Aerospace",
-                StartDate = new DateTime(2020, 9, 1),
-                EndDate = new DateTime(2024, 5, 12)
-            },
-            new Education
-            {
-                ProfileId = 1,
-                Institution = "ULIM",
-                Speciality = "Foreign Languages",
-                StartDate = new DateTime(2021, 9, 1),
-                EndDate = new DateTime(2025, 5, 12)
-            }
-        );
+        var institutions = new[] {"UTM", "ASEM", "USM", "ULIM"};
+        var specialities = new[]
+        {
+            "International Law", "Civil Rights", "Corporate Law", "Criminal Law", "Family Law",
+            "Intellectual Property Law", "Employment Law", "Real Estate Law"
+        };
+
+        var educationFaker = new Faker<Education>()
+            .RuleFor(e => e.ProfileId, f => f.Random.Long(1, n))
+            .RuleFor(e => e.Institution, f => f.Random.ArrayElement(institutions))
+            .RuleFor(e => e.Speciality, f => f.Random.ArrayElement(specialities))
+            .RuleFor(e => e.StartDate, f => f.Date.Past())
+            .RuleFor(e => e.EndDate, f => f.Random.Bool() ? f.Date.Past() : null);
+
+        var educations = educationFaker.Generate(n * 3);
+
+        dbContext.Educations.AddRange(educations);
 
         await dbContext.SaveChangesAsync();
     }
