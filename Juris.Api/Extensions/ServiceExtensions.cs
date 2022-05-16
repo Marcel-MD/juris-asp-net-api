@@ -1,4 +1,5 @@
-﻿using Juris.Bll.Configuration;
+﻿using AspNetCoreRateLimit;
+using Juris.Bll.Configuration;
 using Juris.Dal;
 using Juris.Domain.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -106,5 +107,14 @@ public static class ServiceExtensions
                             .ToList()
                 });
         });
+    }
+
+    public static void ConfigureRateLimiting(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddOptions();
+        services.AddMemoryCache();
+        services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
+        services.AddInMemoryRateLimiting();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
     }
 }

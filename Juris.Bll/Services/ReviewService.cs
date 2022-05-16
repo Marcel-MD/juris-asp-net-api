@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using AutoMapper;
-using Juris.Common.Exceptions;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.Review;
+using Juris.Common.Exceptions;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -12,10 +12,10 @@ namespace Juris.Bll.Services;
 
 public class ReviewService : IReviewService
 {
+    private readonly IMapper _mapper;
     private readonly IGenericRepository<Profile> _profileRepository;
     private readonly IGenericRepository<Review> _reviewRepository;
     private readonly IUnitOfWork _unitOfWord;
-    private readonly IMapper _mapper;
 
     public ReviewService(IUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -43,7 +43,7 @@ public class ReviewService : IReviewService
         await _reviewRepository.Insert(review);
         await _unitOfWord.Save();
         await UpdateProfileRating(profileId);
-        return _mapper.Map<ReviewDto>(review);;
+        return _mapper.Map<ReviewDto>(review);
     }
 
     public async Task DeleteReview(long id)

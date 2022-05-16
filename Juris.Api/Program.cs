@@ -1,7 +1,8 @@
+using AspNetCoreRateLimit;
 using Azure.Storage.Blobs;
-using Juris.Bll.Configuration;
 using Juris.Api.Extensions;
 using Juris.Api.Filters;
+using Juris.Bll.Configuration;
 using Juris.Bll.IServices;
 using Juris.Bll.Services;
 using Juris.Dal;
@@ -27,6 +28,9 @@ builder.Services.AddSingleton<IBlobService>(sp =>
 // Identity
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwt(builder.Configuration);
+
+// Rate Limiting
+builder.Services.ConfigureRateLimiting(builder.Configuration);
 
 // Services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -70,6 +74,8 @@ app.UseCors("AllowAny");
 
 app.UseHttpsRedirection();
 
+app.UseIpRateLimiting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -81,4 +87,6 @@ await app.Seed();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

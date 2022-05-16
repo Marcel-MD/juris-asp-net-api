@@ -93,4 +93,16 @@
     <data name="CantUpload" xml:space="preserve">
         <value>Could not upload file {0}</value>
     </data>
+    <data name="RequestApprovedEmail" xml:space="preserve">
+        <value>Your appointment request has been approved. You will be contacted shortly.</value>
+    </data>
+    <data name="RequestDeclinedEmail" xml:space="preserve">
+        <value>Your appointment request has been declined. Don't worry we have other lawyer on our platform you can choose from.</value>
+    </data>
+    <data name="RequestApprovedSubject" xml:space="preserve">
+        <value>Appointment Request Approved</value>
+    </data>
+    <data name="RequestDeclinedSubject" xml:space="preserve">
+        <value>Appointmnet Request Declined</value>
+    </data>
 </root>

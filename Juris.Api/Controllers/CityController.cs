@@ -1,5 +1,5 @@
-﻿using Juris.Common.Dtos.City;
-using Juris.Bll.IServices;
+﻿using Juris.Bll.IServices;
+using Juris.Common.Dtos.City;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

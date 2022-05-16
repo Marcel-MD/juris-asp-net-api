@@ -205,6 +205,42 @@ namespace Juris.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your appointment request has been approved. You will be contacted shortly..
+        /// </summary>
+        public static string RequestApprovedEmail {
+            get {
+                return ResourceManager.GetString("RequestApprovedEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appointment Request Approved.
+        /// </summary>
+        public static string RequestApprovedSubject {
+            get {
+                return ResourceManager.GetString("RequestApprovedSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your appointment request has been declined. Don&apos;t worry we have other lawyer on our platform you can choose from..
+        /// </summary>
+        public static string RequestDeclinedEmail {
+            get {
+                return ResourceManager.GetString("RequestDeclinedEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appointmnet Request Declined.
+        /// </summary>
+        public static string RequestDeclinedSubject {
+            get {
+                return ResourceManager.GetString("RequestDeclinedSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request with id={0} not found.
         /// </summary>
         public static string RequestNotFound {

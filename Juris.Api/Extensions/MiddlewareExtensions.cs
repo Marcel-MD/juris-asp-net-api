@@ -4,5 +4,8 @@ namespace Juris.Api.Extensions;
 
 public static class MiddlewareExtensions
 {
-    public static IApplicationBuilder UseDbTransaction(this IApplicationBuilder app) => app.UseMiddleware<DbTransactionMiddleware>();
+    public static IApplicationBuilder UseDbTransaction(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<DbTransactionMiddleware>();
+    }
 }

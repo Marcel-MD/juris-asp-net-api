@@ -1,6 +1,6 @@
 ﻿namespace Juris.Domain.Constants;
 
-public class ProfileSortBy
+public static class ProfileSortBy
 {
     public const string PriceDesc = "PriceDesc";
     public const string PriceAsc = "PriceAsc";

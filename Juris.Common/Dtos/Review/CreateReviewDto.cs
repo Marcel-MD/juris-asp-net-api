@@ -19,17 +19,12 @@ public class CreateReviewDto
     [MaxLength(50)]
     public string Email { get; set; }
 
-    [Required]
-    [MinLength(8)]
-    [MaxLength(50)]
-    public string PhoneNumber { get; set; }
+    [Required] [Phone] [MaxLength(50)] public string PhoneNumber { get; set; }
 
     [Required]
     [MinLength(16)]
     [MaxLength(250)]
     public string Description { get; set; }
 
-    [Required]
-    [Range(1, 10)]
-    public int Rating { get; set; }
+    [Required] [Range(1, 10)] public int Rating { get; set; }
 }

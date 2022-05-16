@@ -15,7 +15,7 @@ public class UpdateProfileDto
     public string LastName { get; set; }
 
     [Required]
-    [MinLength(8)]
+    [Phone]
     [MaxLength(50)]
     public string PhoneNumber { get; set; }
 
