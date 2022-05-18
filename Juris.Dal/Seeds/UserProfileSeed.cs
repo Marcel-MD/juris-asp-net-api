@@ -24,7 +24,7 @@ public static class UserProfileSeed
         var userFaker = new Faker<FakeUser>()
             .RuleFor(u => u.FirstName, f => f.Name.FirstName())
             .RuleFor(u => u.LastName, f => f.Name.LastName())
-            .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName, "mailinator.com"));
+            .RuleFor(u => u.Email, (f, u) => u.FirstName + u.LastName + "@mailinator.com");
 
         var profileFaker = new Faker<Profile>()
             .RuleFor(p => p.Address, f => f.Address.StreetAddress())

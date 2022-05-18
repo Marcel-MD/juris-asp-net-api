@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Juris.Api.Filters;
 
+/// <summary>
+///     Handles an <b>HttpResponseException</b> and creates relevant http response with the status code and error message
+///     specified in the exception.
+/// </summary>
 public class HttpResponseExceptionFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)

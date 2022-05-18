@@ -8,6 +8,12 @@ namespace Juris.Dal;
 
 public static class DatabaseSeeder
 {
+    /// <summary>
+    ///     Seeds random users' data in the database if it's empty. By default it generates 12 users and their profiles and
+    ///     three times more educations, experiences, reviews and appointments, all are distributed randomly.
+    /// </summary>
+    /// <param name="app">Current application builder.</param>
+    /// <param name="nrOfUsers">Number of users to be generated.</param>
     public static async Task Seed(this IApplicationBuilder app, int nrOfUsers = 12)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
