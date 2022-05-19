@@ -1,6 +1,7 @@
 ﻿using Juris.Bll.IServices;
 using Juris.Common.Dtos.Profile;
 using Juris.Common.Parameters;
+using Juris.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,7 +71,7 @@ public class ProfileController : BaseController
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleType.Admin)]
     [HttpPatch("{id}/status/{status}")]
     public async Task<IActionResult> UpdateProfileStatus(long id, string status)
     {

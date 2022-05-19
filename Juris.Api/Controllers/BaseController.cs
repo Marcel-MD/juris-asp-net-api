@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using Juris.Common.Exceptions;
+using Juris.Resource;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juris.Api.Controllers;
@@ -14,7 +15,7 @@ public class BaseController : ControllerBase
         var ok = long.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var currentUserId);
         if (!ok)
             throw new HttpResponseException(HttpStatusCode.BadRequest,
-                "Something wrong with your token, Please log in again");
+                GlobalResource.BadToken);
 
         return currentUserId;
     }

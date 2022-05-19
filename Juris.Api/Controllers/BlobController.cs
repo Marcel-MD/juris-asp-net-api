@@ -1,4 +1,5 @@
 ﻿using Juris.Bll.IServices;
+using Juris.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MimeTypes;
@@ -30,7 +31,7 @@ public class BlobController : BaseController
         return File(stream, mime, name);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleType.Admin)]
     [HttpDelete("{name}")]
     public async Task<IActionResult> DeleteBlob(string name)
     {
@@ -38,7 +39,7 @@ public class BlobController : BaseController
         return NoContent();
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleType.Admin)]
     [HttpPost]
     public async Task<IActionResult> UploadBlob(IFormFile file)
     {

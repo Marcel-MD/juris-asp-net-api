@@ -105,4 +105,7 @@
     <data name="RequestDeclinedSubject" xml:space="preserve">
         <value>Appointmnet Request Declined</value>
     </data>
+    <data name="BadToken" xml:space="preserve">
+        <value>Something wrong with your token, Please log in again</value>
+    </data>
 </root>
