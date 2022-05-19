@@ -1,5 +1,6 @@
 ﻿using Juris.Bll.IServices;
 using Juris.Common.Dtos.User;
+using Juris.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleType.Admin)]
     [HttpGet]
     public async Task<IActionResult> GetUsers()
     {

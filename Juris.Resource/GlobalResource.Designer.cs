@@ -61,6 +61,15 @@ namespace Juris.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Something wrong with your token, Please log in again.
+        /// </summary>
+        public static string BadToken {
+            get {
+                return ResourceManager.GetString("BadToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not delete this resource because it&apos;s used.
         /// </summary>
         public static string CantDeleteResource {

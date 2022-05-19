@@ -1,5 +1,6 @@
 ﻿using Juris.Bll.IServices;
 using Juris.Common.Dtos.Review;
+using Juris.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,7 @@ public class ReviewController : BaseController
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleType.Admin)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReview(long id)
     {
