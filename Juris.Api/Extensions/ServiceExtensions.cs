@@ -94,6 +94,9 @@ public static class ServiceExtensions
         });
     }
 
+    /// <summary>
+    ///     Converts the validation error response from a <b>ModelStateDictionary</b> to and array of error messages.
+    /// </summary>
     public static void ConfigureValidationErrorResponse(this IServiceCollection services)
     {
         services.Configure<ApiBehaviorOptions>(o =>
