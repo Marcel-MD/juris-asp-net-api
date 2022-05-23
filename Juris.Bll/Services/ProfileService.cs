@@ -162,7 +162,7 @@ public class ProfileService : IProfileService
     public async Task<ProfileDto> GetProfileById(long id)
     {
         var profile = await _profileRepository.Get(p => p.Id == id,
-            p => p.City, p => p.ProfileCategory, p => p.Educations, p => p.Experiences, p => p.Reviews);
+            p => p.City, p => p.ProfileCategory, p => p.Educations, p => p.Experiences);
 
         if (profile == null)
             throw new HttpResponseException(HttpStatusCode.NotFound, string.Format(GlobalResource.ProfileNotFound, id));

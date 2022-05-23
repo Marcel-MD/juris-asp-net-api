@@ -1,5 +1,6 @@
 ﻿using Juris.Bll.IServices;
 using Juris.Common.Dtos.Review;
+using Juris.Common.Parameters;
 using Juris.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ public class ReviewController : BaseController
     }
 
     [HttpGet("{profileId}")]
-    public async Task<IActionResult> GetReviewsByProfileId(long profileId)
+    public async Task<IActionResult> GetReviewsByProfileId(long profileId, [FromQuery] PagingParameters parameters)
     {
-        var result = await _service.GetAllReviews(profileId);
+        var result = await _service.GetAllReviews(profileId, parameters);
         return Ok(result);
     }
 
