@@ -1,4 +1,5 @@
 ﻿using Juris.Common.Dtos.Review;
+using Juris.Common.Parameters;
 
 namespace Juris.Bll.IServices;
 
@@ -8,8 +9,9 @@ public interface IReviewService
     ///     Gets all reviews by profile id.
     /// </summary>
     /// <param name="profileId">Profile id.</param>
+    /// <param name="parameters">Paging parameters.</param>
     /// <returns>List of reviews.</returns>
-    Task<IEnumerable<ReviewDto>> GetAllReviews(long profileId);
+    Task<IEnumerable<ReviewDto>> GetAllReviews(long profileId, PagingParameters parameters);
 
     /// <summary>
     ///     Creates a new review for a profile.

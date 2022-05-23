@@ -2,7 +2,6 @@
 using Juris.Common.Dtos.Education;
 using Juris.Common.Dtos.Experience;
 using Juris.Common.Dtos.ProfileCategory;
-using Juris.Common.Dtos.Review;
 
 namespace Juris.Common.Dtos.Profile;
 
@@ -33,8 +32,6 @@ public class ProfileDto
     public IEnumerable<EducationDto> Educations { get; set; }
 
     public IEnumerable<ExperienceDto> Experiences { get; set; }
-
-    public IEnumerable<ReviewDto> Reviews { get; set; }
 
     public ProfileCategoryDto ProfileCategory { get; set; }
 

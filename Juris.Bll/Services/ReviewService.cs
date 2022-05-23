@@ -3,6 +3,7 @@ using AutoMapper;
 using Juris.Bll.IServices;
 using Juris.Common.Dtos.Review;
 using Juris.Common.Exceptions;
+using Juris.Common.Parameters;
 using Juris.Dal.Repositories;
 using Juris.Domain.Entities;
 using Juris.Resource;
@@ -25,9 +26,10 @@ public class ReviewService : IReviewService
         _reviewRepository = unitOfWork.ReviewRepository;
     }
 
-    public async Task<IEnumerable<ReviewDto>> GetAllReviews(long profileId)
+    public async Task<IEnumerable<ReviewDto>> GetAllReviews(long profileId, PagingParameters parameters)
     {
-        var reviews = await _reviewRepository.GetAll(e => e.ProfileId == profileId);
+        var reviews = await _reviewRepository.GetAll(e => e.ProfileId == profileId, null, parameters.PageNumber,
+            parameters.PageSize);
         return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
     }
 
